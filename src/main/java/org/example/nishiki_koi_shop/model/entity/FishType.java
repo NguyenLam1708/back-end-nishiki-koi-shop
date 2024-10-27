@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "fish_types")
+@Table(name = "fish_type")
 public class FishType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class FishType {
 
     private String name;
     private String description;
-    private LocalDate deletedAt;
+
 
     @OneToMany(mappedBy = "fishType")
     private List<Fish> fish;
