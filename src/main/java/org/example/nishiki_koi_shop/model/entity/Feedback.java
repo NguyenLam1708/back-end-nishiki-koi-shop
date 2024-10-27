@@ -20,7 +20,6 @@ public class Feedback {
 
     private String comment;
     private LocalDate createdDate;
-    private LocalDate deletedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -28,7 +27,7 @@ public class Feedback {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tour_id")
-    private Tour tour; // Tham chiếu đến tour nếu phản hồi liên quan đến tour
+    private Tour tour;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fish_id")
