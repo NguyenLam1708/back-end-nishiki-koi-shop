@@ -28,7 +28,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
     private String fullName;
-    private String profilePicture;
     private String phoneNumber;
     private String address;
     private LocalDate createdDate;
@@ -37,6 +36,10 @@ public class User implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Role_ID", nullable = false)
     private Role role;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
+    private Cart cart;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderFish> orderFish;
