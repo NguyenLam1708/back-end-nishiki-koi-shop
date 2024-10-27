@@ -28,5 +28,5 @@ public class OrderFishDetail {
 
     private Integer quantity;
     private long price;
-    private LocalDate deletedAt;
+
 }
