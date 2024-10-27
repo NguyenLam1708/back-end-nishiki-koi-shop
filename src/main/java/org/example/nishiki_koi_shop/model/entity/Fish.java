@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Fishes")
+@Table(name = "fishes")
 public class Fish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Fish {
     private long size;
     private Integer quantity;
     private LocalDate createdDate;
-    private LocalDate deletedAt;
+
 
     @ManyToOne
     @JoinColumn(name = "fish_type_id", nullable = false)
@@ -36,6 +36,9 @@ public class Fish {
 
     @OneToMany(mappedBy = "fish", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderFishDetail> orderFishDetail;
+
+    @OneToMany(mappedBy = "fish", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CartItem> cartItem;
 
     @OneToMany(mappedBy = "fish", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Feedback> feedbackList;

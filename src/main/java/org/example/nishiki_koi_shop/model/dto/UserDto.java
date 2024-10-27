@@ -16,17 +16,14 @@ public class UserDto {
     private String username;
     private String email;
     private String fullName;
-    private String profilePicture;
     private String roleName;
     private LocalDate createdDate;
-    private String status;
 
     public static UserDto from(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .fullName(user.getFullName())
                 .email(user.getEmail())
-                .profilePicture(user.getProfilePicture())
                 .roleName(user.getRole() != null ? user.getRole().getName() : null)
                 .createdDate(user.getCreatedDate())  // Thêm createdDate nếu cần
                 .build();

@@ -1,5 +1,6 @@
 package org.example.nishiki_koi_shop.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +29,6 @@ public class Tour {
     private long price;
     private Date createdDate;
     private Integer max_participants;
-    private LocalDate deletedAt; // trường cho xóa mềm
 
     @ManyToOne
     @JoinColumn(name = "farm_id", nullable = false)
