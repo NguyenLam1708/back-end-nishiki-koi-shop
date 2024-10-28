@@ -26,14 +26,13 @@ public class OrderTour {
     private LocalDate  tourStartDate;
     private String paymentMethod;
     private LocalDate createdDate;
-    private LocalDate deletedAt; // để xử lý xóa mềm
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "orderTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderTourDetail> orderTourDetail;
+    @OneToOne(mappedBy = "orderTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private OrderTourDetail orderTourDetail;
 
     public enum Status {
         PENDING, APPROVED, REJECTED, CANCELLED

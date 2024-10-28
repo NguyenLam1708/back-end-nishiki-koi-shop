@@ -1,6 +1,8 @@
 package org.example.nishiki_koi_shop.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +26,6 @@ public class Farm {
     private String description;
     private LocalDate createdDate;
     private String contactInfo;
-    private LocalDate deletedAt;
 
     @OneToMany(mappedBy = "farm")
     private List<Fish> fishList;

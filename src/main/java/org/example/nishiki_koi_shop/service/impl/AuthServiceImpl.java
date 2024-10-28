@@ -103,7 +103,6 @@ public class AuthServiceImpl implements AuthService {
                 log.info("User {} refreshed token", user.getUsername());
 
                 // Xác định trạng thái và thông điệp kết quả
-                String status = "success";
                 String result = "Token refreshed successfully";
 
                 return AuthDto.from(user, jwtTokenProvider.generateAccessToken(auth), refreshToken , result);
