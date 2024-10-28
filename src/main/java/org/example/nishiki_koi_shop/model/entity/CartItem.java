@@ -3,7 +3,7 @@ package org.example.nishiki_koi_shop.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,22 +11,22 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "order_fish_detail")
-public class OrderFishDetail {
+@Table(name = "carts_item")
+public class CartItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long orderFishDetailId;
+    private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_fish_id", nullable = false)
-    private OrderFish orderFish;
+    private int quantity;
+    private long price;
 
-    // Tham chiếu đến loại cá
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fish_id", nullable = false)
     private Fish fish;
 
-    private Integer quantity;
-    private long price;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id", nullable = false)
+    private Cart cart;
 
 }

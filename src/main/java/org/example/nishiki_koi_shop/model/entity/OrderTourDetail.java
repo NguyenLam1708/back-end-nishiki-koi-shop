@@ -18,9 +18,8 @@ public class OrderTourDetail {
     private long orderTourDetailId;
     private Integer numberOfPeople;
     private long price;
-    private LocalDate deletedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_tour_id", nullable = false)
     private OrderTour orderTour;
 
