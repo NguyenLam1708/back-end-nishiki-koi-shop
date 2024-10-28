@@ -6,8 +6,8 @@ import org.example.nishiki_koi_shop.model.dto.FishDto;
 import org.example.nishiki_koi_shop.repository.FishRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
