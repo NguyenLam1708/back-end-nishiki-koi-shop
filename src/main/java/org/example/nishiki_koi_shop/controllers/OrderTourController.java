@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/order-tours")
@@ -20,6 +22,10 @@ public class OrderTourController {
     public ResponseEntity<OrderTourDto> createOrderTour(@RequestBody OrderTourForm orderTourForm) {
         OrderTourDto createdOrderTour = orderTourService.createOrderTour(orderTourForm);
         return new ResponseEntity<>(createdOrderTour, HttpStatus.CREATED);
+    }
+    @GetMapping("/user/{userId}")
+    public List<OrderTourDto> getOrderToursByUserId(@PathVariable long userId) {
+        return orderTourService.getOrderToursByUserId(userId);
     }
 
 }

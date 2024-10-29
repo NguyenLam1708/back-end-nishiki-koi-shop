@@ -10,4 +10,5 @@ public interface OrderTourService {
     OrderTourDto getOrderTourById(long id);
     List<OrderTourDto> getAllOrderTours();
     OrderTourDto updateOrderTour(long id, OrderTourForm orderTourForm);
+    List<OrderTourDto> getOrderToursByUserId(long userId);
 }

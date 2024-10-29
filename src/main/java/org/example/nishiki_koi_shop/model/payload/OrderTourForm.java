@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class OrderTourForm {
-    private long orderTourId;
     private long userId;
     private long totalAmount;
     private OrderTour.Status status;

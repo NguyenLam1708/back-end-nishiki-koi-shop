@@ -78,5 +78,9 @@ public class OrderTourServiceImpl implements OrderTourService {
         OrderTour updatedOrderTour = orderTourRepository.save(orderTour);
         return OrderTourDto.from(updatedOrderTour);
     }
-
+    @Override
+    public List<OrderTourDto> getOrderToursByUserId(long userId) {
+        List<OrderTour> orders = orderTourRepository.findByUserId(userId);
+        return orders.stream().map(OrderTourDto::from).collect(Collectors.toList());
+    }
 }
