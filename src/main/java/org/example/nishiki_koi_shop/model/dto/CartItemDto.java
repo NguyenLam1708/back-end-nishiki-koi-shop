@@ -9,10 +9,10 @@ import org.example.nishiki_koi_shop.model.payload.CartItemForm;
 @Builder
 public class CartItemDto {
     private long id;
-    private long cartId;
     private long fishId;
     private int quantity;
     private long price;
+    private long cartId;
 
     public static CartItemDto fromCartItem(CartItem cartItem) {
         return CartItemDto.builder()
