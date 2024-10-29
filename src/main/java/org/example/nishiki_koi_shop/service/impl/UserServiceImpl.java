@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserForm updateUser(Long id, UserForm form) {
+    public UserDto updateUser(Long id, UserForm form) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
         log.info("User with ID {} updated successfully", id);
-        return UserForm.from(user);
+        return UserDto.from(user);
     }
 
     @Override
