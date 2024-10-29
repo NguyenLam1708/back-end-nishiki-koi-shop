@@ -13,6 +13,6 @@ public interface UserService {
     UserDto getMyInfo();
     UserDto getUserById(Long id);
     List<UserDto> getAllUsers();
-    UserForm updateUser(Long id, UserForm form);
+    UserDto updateUser(Long id, UserForm form);
     String changePassword(ChangePasswordForm request, Principal connectedUser);
 }
