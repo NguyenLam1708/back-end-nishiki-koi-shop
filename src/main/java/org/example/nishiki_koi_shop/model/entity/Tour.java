@@ -27,8 +27,8 @@ public class Tour {
     private LocalDate startDate;
     private LocalDate endDate;
     private long price;
-    private Date createdDate;
-    private Integer max_participants;
+    private LocalDate createdDate;
+    private Integer maxParticipants;
 
     @ManyToOne
     @JoinColumn(name = "farm_id", nullable = false)
