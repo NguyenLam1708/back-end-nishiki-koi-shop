@@ -4,25 +4,29 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.nishiki_koi_shop.model.entity.Cart;
 import org.example.nishiki_koi_shop.model.entity.CartItem;
-import org.example.nishiki_koi_shop.model.payload.CartForm;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 @Data
 public class CartDto {
-    private long id;
+    private long cartId;
     private long userId;
     private LocalDate createdDate;
-    private List<CartItem> items;
+    private List<CartItemDto> items;
 
     public static CartDto fromCart(Cart cart) {
+        List<CartItemDto> itemDtos = cart.getItems().stream()
+                .map(CartItemDto::fromCartItem) // Chuyển đổi CartItem sang CartItemDto
+                .collect(Collectors.toList());
+
         return CartDto.builder()
-                .id(cart.getId())
+                .cartId(cart.getId())
                 .userId(cart.getUser().getId())
                 .createdDate(cart.getCreatedDate())
-                .items(cart.getItems())
+                .items(itemDtos)
                 .build();
     }
 }
