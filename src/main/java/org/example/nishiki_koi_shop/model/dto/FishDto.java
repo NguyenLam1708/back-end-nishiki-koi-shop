@@ -14,6 +14,8 @@ public class FishDto {
     private String image;
     private long size;
     private Integer quantity;
+    private long fishTypeId ;
+    private long farmId;
 
     public static FishDto from(Fish fish) {
         return FishDto.builder()
@@ -24,6 +26,8 @@ public class FishDto {
                 .image(fish.getImage())
                 .size(fish.getSize())
                 .quantity(fish.getQuantity())
+                .fishTypeId(fish.getFishType().getFishTypeId())
+                .farmId(fish.getFarm().getFarmId())
                 .build();
     }
 }

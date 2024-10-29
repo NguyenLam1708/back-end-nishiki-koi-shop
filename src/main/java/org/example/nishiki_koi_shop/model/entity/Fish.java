@@ -25,7 +25,6 @@ public class Fish {
     private Integer quantity;
     private LocalDate createdDate;
 
-
     @ManyToOne
     @JoinColumn(name = "fish_type_id", nullable = false)
     private FishType fishType;
