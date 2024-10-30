@@ -35,15 +35,22 @@ public class ManagerController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
+    @GetMapping("/myInfo")
+    public ResponseEntity<UserDto> getMyInfo() {
+        return ResponseEntity.ok(userService.getMyInfo());
+    }
+
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
+
     @DeleteMapping("users/{loggedInUserId}/soft-delete/{id}")
     public ResponseEntity<String> softDeleteUser(@PathVariable("id") Long userId, @PathVariable("loggedInUserId") Long loggedInUserId) {
         userService.softDeleteUser(userId, loggedInUserId);
         return ResponseEntity.ok("Người dùng đã được xóa mềm thành công");
     }
+
     @PutMapping("users/{id}/restore")
     public ResponseEntity<String> restoreUser(@PathVariable("id") Long id) {
         userService.restoreUser(id);
