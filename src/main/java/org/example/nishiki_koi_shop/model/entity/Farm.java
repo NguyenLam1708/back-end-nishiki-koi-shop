@@ -21,6 +21,7 @@ public class Farm {
 
     private String name;
     private String location;
+    @Column(length = 3000)
     private String description;
     private LocalDate createdDate;
     private String contactInfo;
