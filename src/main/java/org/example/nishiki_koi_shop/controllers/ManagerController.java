@@ -2,13 +2,14 @@ package org.example.nishiki_koi_shop.controllers;
 
 
 import lombok.RequiredArgsConstructor;
-import org.example.nishiki_koi_shop.model.dto.FishDto;
-import org.example.nishiki_koi_shop.model.dto.OrderTourDetailDto;
-import org.example.nishiki_koi_shop.model.dto.OrderTourDto;
-import org.example.nishiki_koi_shop.model.dto.UserDto;
+import org.example.nishiki_koi_shop.model.dto.*;
+import org.example.nishiki_koi_shop.model.entity.Farm;
+import org.example.nishiki_koi_shop.model.payload.FarmForm;
 import org.example.nishiki_koi_shop.model.payload.FishForm;
 import org.example.nishiki_koi_shop.model.payload.OrderTourDetailForm;
 import org.example.nishiki_koi_shop.model.payload.OrderTourForm;
+import org.example.nishiki_koi_shop.repository.FarmRepository;
+import org.example.nishiki_koi_shop.service.impl.FarmServiceImpl;
 import org.example.nishiki_koi_shop.service.impl.FishServiceImpl;
 import org.example.nishiki_koi_shop.service.OrderTourDetailService;
 import org.example.nishiki_koi_shop.service.OrderTourService;
@@ -28,7 +29,7 @@ public class ManagerController {
     private final OrderTourService orderTourService;
     private final OrderTourDetailService orderTourDetailService;
     private final FishServiceImpl fishServiceImpl;
-
+    private final FarmServiceImpl farmServiceImpl;
 
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
@@ -89,6 +90,7 @@ public class ManagerController {
         OrderTourDetailDto updatedDetail = orderTourDetailService.updateOrderTourDetail(id, form);
         return new ResponseEntity<>(updatedDetail, HttpStatus.OK);
     }
+
     // Fish
     // Create
     @PostMapping("/fish/create-fish")
@@ -123,6 +125,21 @@ public class ManagerController {
     public ResponseEntity<Void> deleteFish(@PathVariable Long id) {
         fishServiceImpl.deleteFish(id);
         return ResponseEntity.noContent().build();
+    }
+
+    //farm
+    //Create
+    @PostMapping("/farm/create-farm")
+    public ResponseEntity<FarmDto> createFarm(@ModelAttribute FarmForm farmForm) {
+        FarmDto createFarm = farmServiceImpl.createFarm(farmForm);
+        return ResponseEntity.ok(createFarm);
+    }
+
+    //Read (All)
+    @GetMapping("/farm/get-all-farm")
+    public ResponseEntity<List<FarmDto>> getAllFarm() {
+        List<FarmDto> famrList = farmServiceImpl.getAllFarm();
+        return ResponseEntity.ok(famrList);
     }
 }
 
