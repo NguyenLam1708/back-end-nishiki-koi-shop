@@ -18,6 +18,7 @@ public class FishType {
     private long fishTypeId;
 
     private String name;
+    @Column(length = 3000)
     private String description;
 
 
