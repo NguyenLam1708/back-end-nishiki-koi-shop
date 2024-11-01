@@ -1,4 +1,4 @@
-package org.example.nishiki_koi_shop.controllers;
+package org.example.nishiki_koi_shop.controller;
 
 import org.example.nishiki_koi_shop.model.dto.CartItemDto;
 import org.example.nishiki_koi_shop.model.payload.CartItemForm;

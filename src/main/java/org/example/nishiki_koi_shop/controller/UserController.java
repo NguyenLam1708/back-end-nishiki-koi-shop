@@ -1,4 +1,4 @@
-package org.example.nishiki_koi_shop.controllers;
+package org.example.nishiki_koi_shop.controller;
 
 
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,6 @@ import org.example.nishiki_koi_shop.model.payload.ChangePasswordForm;
 import org.example.nishiki_koi_shop.model.payload.UserForm;
 import org.example.nishiki_koi_shop.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;

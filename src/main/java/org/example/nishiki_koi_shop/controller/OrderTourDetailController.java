@@ -1,4 +1,4 @@
-package org.example.nishiki_koi_shop.controllers;
+package org.example.nishiki_koi_shop.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.nishiki_koi_shop.model.dto.OrderTourDetailDto;
@@ -7,8 +7,6 @@ import org.example.nishiki_koi_shop.service.OrderTourDetailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/order-tour-details")

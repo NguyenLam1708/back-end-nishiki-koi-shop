@@ -37,10 +37,6 @@ public class User implements UserDetails {
     @JoinColumn(name = "Role_ID", nullable = false)
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
-    private Cart cart;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderFish> orderFish;
 
