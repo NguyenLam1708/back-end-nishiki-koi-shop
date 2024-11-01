@@ -46,7 +46,8 @@ public class SecurityConfig {
                                 "/api/v1/order-tour-details",
                                 "/api/v1/cart",
                                 "/api/v1/cart/items",
-                                "/api/v1/fish").hasAuthority("ROLE_CUSTOMER")
+                                "/api/v1/fish",
+                                ("/api/v1/fish-types")).hasAuthority("ROLE_CUSTOMER")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
@@ -58,7 +59,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-    private CorsConfigurationSource corsConfigurationSource() {
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000"); // Thay đổi nếu cần
         configuration.addAllowedMethod("*");
@@ -80,8 +82,4 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
-        return new CorsFilter(corsConfigurationSource());
-    }
 }
