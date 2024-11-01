@@ -21,20 +21,14 @@ public class Tour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tourId;
+
     private String name;
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
     private long price;
-    private Integer maxParticipants;
-
-    @Column(updatable = false)
     private LocalDate createdDate;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDate.now();
-    }
+    private Integer maxParticipants;
 
     @ManyToOne
     @JoinColumn(name = "farm_id", nullable = false)
