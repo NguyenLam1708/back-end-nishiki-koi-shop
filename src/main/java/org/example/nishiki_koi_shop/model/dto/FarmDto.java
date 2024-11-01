@@ -11,22 +11,22 @@ import java.time.LocalDateTime;
 @Builder
 public class FarmDto {
     private Long farmId;
-    private String farmName;
-    private String farmDescription;
-    private String contactInfo;
+    private String name;
+    private String description;
     private String location;
+    private String image;
+    private String contactInfo;
     private LocalDate createdDate;
-    private String imageUrl;
 
     public static FarmDto from(Farm farm) {
         return FarmDto.builder()
                 .farmId(farm.getFarmId())
-                .farmName(farm.getName())
-                .farmDescription(farm.getDescription())
+                .name(farm.getName())
+                .description(farm.getDescription())
                 .contactInfo(farm.getContactInfo())
                 .location(farm.getLocation())
                 .createdDate(farm.getCreatedDate())
-                .imageUrl(farm.getImage())
+                .image(farm.getImage())
                 .build();
     }
 }
