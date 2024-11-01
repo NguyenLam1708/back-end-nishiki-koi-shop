@@ -1,4 +1,4 @@
-package org.example.nishiki_koi_shop.controllers;
+package org.example.nishiki_koi_shop.controller;
 
 
 import lombok.RequiredArgsConstructor;
@@ -8,6 +8,7 @@ import org.example.nishiki_koi_shop.model.payload.*;
 import org.example.nishiki_koi_shop.service.*;
 import org.example.nishiki_koi_shop.service.impl.FarmServiceImpl;
 import org.example.nishiki_koi_shop.service.impl.FishServiceImpl;
+import org.example.nishiki_koi_shop.service.impl.TourServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class ManagerController {
     private final FishService fishService;
     private final FarmService farmService;
     private final FishTypeService fishTypeService;
+    private final TourServiceImpl tourServiceImpl;
 
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
@@ -148,6 +150,41 @@ public class ManagerController {
     public ResponseEntity<List<TourDto>> getAllTour() {
         List<TourDto> tourList = tourServiceImpl.getAllTour();
         return ResponseEntity.ok(tourList);
+    }
+
+    // fish type
+    @GetMapping("/fish-types/get-all-fish-types")
+    public ResponseEntity<List<FishTypeDto>> getAllFishTypes() {
+        return ResponseEntity.ok(fishTypeService.getAllFishTypes());
+    }
+
+    @GetMapping("/fish-types/{id}")
+    public ResponseEntity<?> getFishTypeById(@PathVariable long id) {
+        try {
+            return ResponseEntity.ok(fishTypeService.getFishTypeById(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/fish-types/create")
+    public ResponseEntity<FishTypeDto> addFishType(@RequestBody FishTypeForm fishTypeForm) {
+        return ResponseEntity.ok(fishTypeService.createFishType(fishTypeForm));
+    }
+
+    @PutMapping("/fish-types/update/{id}")
+    public ResponseEntity<FishTypeDto> updateFishType(@PathVariable long id, @RequestBody FishTypeForm fishTypeForm) {
+        FishTypeDto updatedFishType = fishTypeService.updateFishType(id, fishTypeForm);
+        return ResponseEntity.ok(updatedFishType);
+    }
+
+    @DeleteMapping("/fish-types/delete/{id}")
+    public ResponseEntity<?> deleteFishType(@PathVariable long id) {
+        try {
+            return ResponseEntity.ok(fishTypeService.deleteFishTypeById(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
 
