@@ -1,4 +1,4 @@
-package org.example.nishiki_koi_shop.controllers;
+package org.example.nishiki_koi_shop.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.nishiki_koi_shop.model.dto.FishDto;
