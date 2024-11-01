@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface FarmRepository extends JpaRepository<Farm, Long> {
     Optional<Farm> findByName(String name);
+
+    boolean existsByName(String name);
 }

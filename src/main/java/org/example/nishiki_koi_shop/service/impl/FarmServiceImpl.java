@@ -8,6 +8,7 @@ import org.example.nishiki_koi_shop.repository.FarmRepository;
 import org.example.nishiki_koi_shop.service.FarmService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,13 +26,17 @@ public class FarmServiceImpl implements FarmService {
 
     @Override
     public FarmDto createFarm(FarmForm farmForm) {
+        if (farmRepository.existsByName(farmForm.getName())) {
+            throw new IllegalArgumentException("Tên trang trại đã tồn tại. Vui lòng chọn tên khác.");
+        }
+
         Farm farm = Farm.builder()
                 .name(farmForm.getName())
                 .description(farmForm.getDescription())
                 .location(farmForm.getLocation())
                 .image(farmForm.getImage())
                 .contactInfo(farmForm.getContactInfo())
-                .createdDate(farmForm.getCreatedDate())
+                .createdDate(LocalDate.now())
                 .build();
         farm = farmRepository.save(farm);
         return FarmDto.from(farm);
