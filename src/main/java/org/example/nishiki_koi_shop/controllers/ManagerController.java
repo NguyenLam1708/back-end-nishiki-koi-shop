@@ -4,16 +4,15 @@ package org.example.nishiki_koi_shop.controllers;
 import lombok.RequiredArgsConstructor;
 import org.example.nishiki_koi_shop.model.dto.*;
 import org.example.nishiki_koi_shop.model.entity.Farm;
-import org.example.nishiki_koi_shop.model.payload.FarmForm;
-import org.example.nishiki_koi_shop.model.payload.FishForm;
-import org.example.nishiki_koi_shop.model.payload.OrderTourDetailForm;
-import org.example.nishiki_koi_shop.model.payload.OrderTourForm;
+import org.example.nishiki_koi_shop.model.payload.*;
 import org.example.nishiki_koi_shop.repository.FarmRepository;
+import org.example.nishiki_koi_shop.repository.TourRepository;
 import org.example.nishiki_koi_shop.service.impl.FarmServiceImpl;
 import org.example.nishiki_koi_shop.service.impl.FishServiceImpl;
 import org.example.nishiki_koi_shop.service.OrderTourDetailService;
 import org.example.nishiki_koi_shop.service.OrderTourService;
 import org.example.nishiki_koi_shop.service.UserService;
+import org.example.nishiki_koi_shop.service.impl.TourServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +29,8 @@ public class ManagerController {
     private final OrderTourDetailService orderTourDetailService;
     private final FishServiceImpl fishServiceImpl;
     private final FarmServiceImpl farmServiceImpl;
+    private final TourRepository tourRepository;
+    private final TourServiceImpl tourServiceImpl;
 
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
@@ -140,6 +141,21 @@ public class ManagerController {
     public ResponseEntity<List<FarmDto>> getAllFarm() {
         List<FarmDto> famrList = farmServiceImpl.getAllFarm();
         return ResponseEntity.ok(famrList);
+    }
+
+    //tour
+    //Create
+    @PostMapping("/tour/create-tour")
+    public ResponseEntity<TourDto> createTour(@ModelAttribute TourForm tourForm) {
+        TourDto createTour = tourServiceImpl.createTour(tourForm);
+        return ResponseEntity.ok(createTour);
+    }
+
+    //Read(All)
+    @GetMapping("/tour/get-all-tour")
+    public ResponseEntity<List<TourDto>> getAllTour() {
+        List<TourDto> tourList = tourServiceImpl.getAllTour();
+        return ResponseEntity.ok(tourList);
     }
 }
 
