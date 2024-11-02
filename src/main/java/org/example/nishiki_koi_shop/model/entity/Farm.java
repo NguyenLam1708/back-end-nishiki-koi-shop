@@ -27,6 +27,7 @@ public class Farm {
 
     @Column(updatable = false)
     private LocalDate createdDate;
+
     @PrePersist
     protected void onCreate() {
         this.createdDate = LocalDate.now();

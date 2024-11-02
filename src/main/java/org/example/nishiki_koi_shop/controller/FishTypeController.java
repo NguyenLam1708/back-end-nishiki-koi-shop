@@ -23,12 +23,12 @@ public class FishTypeController {
         }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> getFishTypeByName(@RequestParam String name) {
-        try {
-            return ResponseEntity.ok(fishTypeService.getFishTypeByName(name));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<?> getFishTypeByName(@RequestParam String name) {
+//        try {
+//            return ResponseEntity.ok(fishTypeService.getFishTypeByName(name));
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        }
+//    }
 }

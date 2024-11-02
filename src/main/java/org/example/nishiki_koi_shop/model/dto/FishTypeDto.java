@@ -19,7 +19,6 @@ public class FishTypeDto {
                 .fishTypeId(fishType.getFishTypeId())
                 .name(fishType.getName())
                 .description(fishType.getDescription())
-                .createdDate(fishType.getCreatedDate())
                 .build();
     }
 }

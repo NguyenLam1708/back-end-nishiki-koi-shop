@@ -29,24 +29,24 @@ public class FishTypeServiceImpl implements FishTypeService {
 
     @Override
     public FishTypeDto getFishTypeById(long id) {
-        return FishTypeDto.fromFishType(fishTypeRepository.findFishTypesByFishTypeId(id)
+        return FishTypeDto.fromFishType(fishTypeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Fish type not found with id " + id)));
     }
 
-    @Override
-    public FishTypeDto createFishType(FishTypeForm fishTypeForm) {
-
-        if (fishTypeRepository.existsByName(fishTypeForm.getName())) {
-            throw new IllegalArgumentException("Tên loại cá đã tồn tại. Vui lòng chọn tên khác.");
-        }
-
-        FishType fishType = new FishType();
-
-        fishType.setName(fishTypeForm.getName());
-        fishType.setDescription(fishTypeForm.getDescription());
-        fishType.setCreatedDate(LocalDate.now());
-        return FishTypeDto.fromFishType(fishTypeRepository.save(fishType));
-    }
+//    @Override
+//    public FishTypeDto createFishType(FishTypeForm fishTypeForm) {
+//
+//        if (fishTypeRepository.existsByName(fishTypeForm.getName())) {
+//            throw new IllegalArgumentException("Tên loại cá đã tồn tại. Vui lòng chọn tên khác.");
+//        }
+//
+//        FishType fishType = new FishType();
+//
+//        fishType.setName(fishTypeForm.getName());
+//        fishType.setDescription(fishTypeForm.getDescription());
+//        fishType.setCreatedDate(LocalDate.now());
+//        return FishTypeDto.fromFishType(fishTypeRepository.save(fishType));
+//    }
 
     @Override
     public FishTypeDto updateFishType(long id, FishTypeForm fishTypeForm) {
@@ -70,10 +70,10 @@ public class FishTypeServiceImpl implements FishTypeService {
         return "Xóa Fish Type " + fishType.getName() + " thành công";
     }
 
-    @Override
-    public FishTypeDto getFishTypeByName(String name) {
-        return FishTypeDto.fromFishType(fishTypeRepository.findFishTypesByName(name)
-                .orElseThrow(() -> new RuntimeException("Fish type not found with name " + name)));
-    }
+//    @Override
+//    public FishTypeDto getFishTypeByName(String name) {
+//        return FishTypeDto.fromFishType(fishTypeRepository.findFishTypesByName(name)
+//                .orElseThrow(() -> new RuntimeException("Fish type not found with name " + name)));
+//    }
 
 }

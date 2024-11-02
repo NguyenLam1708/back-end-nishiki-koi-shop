@@ -23,7 +23,14 @@ public class Fish {
     private String image;
     private long size;
     private Integer quantity;
+
+    @Column(updatable = false)
     private LocalDate createdDate;
+
+    @PrePersist
+    private void onCreate() {
+        this.createdDate = LocalDate.now();
+    }
 
     @ManyToOne
     @JoinColumn(name = "fish_type_id", nullable = false)
