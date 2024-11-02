@@ -27,8 +27,15 @@ public class Tour {
     private LocalDate startDate;
     private LocalDate endDate;
     private long price;
-    private LocalDate createdDate;
     private Integer maxParticipants;
+
+    @Column(updatable = false)
+    private LocalDate createdDate;
+
+    @PrePersist
+    private void onCreate() {
+        this.createdDate = LocalDate.now();
+    }
 
     @ManyToOne
     @JoinColumn(name = "farm_id", nullable = false)

@@ -19,7 +19,14 @@ public class Feedback {
     private long feedBackId;
 
     private String comment;
+
+    @Column(updatable = false)
     private LocalDate createdDate;
+
+    @PrePersist
+    private void onCreate() {
+        this.createdDate = LocalDate.now();
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

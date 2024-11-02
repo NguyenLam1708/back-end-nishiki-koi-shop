@@ -8,9 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface FishTypeRepository extends JpaRepository<FishType, Long> {
-    Optional<FishType> findFishTypesByName(String name);
-
-    Optional<FishType> findFishTypesByFishTypeId(long fishTypeId);
-
-    boolean existsByName(String name);
+//    Optional<FishType> findFishTypesByName(String name);
+//
+//    Optional<FishType> findFishTypesByFishTypeId(long fishTypeId);
+//
+//    boolean existsByName(String name);
 }

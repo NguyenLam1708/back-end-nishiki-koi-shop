@@ -1,6 +1,8 @@
-package org.example.nishiki_koi_shop.controller;
+package org.example.nishiki_koi_shop.controllers;
 
-import org.example.nishiki_koi_shop.dto.FeedbackDto;
+import jakarta.validation.Valid;
+import org.example.nishiki_koi_shop.model.dto.FeedbackDto;
+import org.example.nishiki_koi_shop.model.payload.FeedbackForm;
 import org.example.nishiki_koi_shop.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,7 @@ public class FeedbackController {
         feedbackDto.setFishId(feedbackForm.getFishId());
         feedbackDto.setRating(feedbackForm.getRating());
 
-        FeedbackDto createdFeedback = feedbackService.createFeedback(feedbackDto);
+        FeedbackDto createdFeedback = feedbackService.createFeedback(feedbackForm);
         return new ResponseEntity<>(createdFeedback, HttpStatus.CREATED);
     }
 
@@ -43,8 +45,8 @@ public class FeedbackController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FeedbackDto> updateFeedback(@PathVariable long id, @RequestBody FeedbackDto feedbackDto) {
-        FeedbackDto updatedFeedback = feedbackService.updateFeedback(id, feedbackDto);
+    public ResponseEntity<FeedbackDto> updateFeedback(@PathVariable long id, @RequestBody FeedbackForm feedbackForm) {
+        FeedbackDto updatedFeedback = feedbackService.updateFeedback(id, feedbackForm);
         return ResponseEntity.ok(updatedFeedback);
     }
 

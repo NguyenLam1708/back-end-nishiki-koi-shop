@@ -25,7 +25,8 @@ public class FishServiceImpl implements FishService {
 
     @Override
     public FishDto createFish(FishForm fishForm) {
-        FishType fishType = fishTypeRepository.findById(fishForm.getFishTypeId())
+        Long fishTypeId = Long.valueOf(fishForm.getFishTypeId());
+        FishType fishType = fishTypeRepository.findById(fishTypeId)
                 .orElseThrow(() -> new IllegalArgumentException("ID loại cá không hợp lệ"));
 
         Farm farm = farmRepository.findById(fishForm.getFarmId())
@@ -38,7 +39,6 @@ public class FishServiceImpl implements FishService {
                 .image(fishForm.getImage())
                 .size(fishForm.getSize())
                 .quantity(fishForm.getQuantity())
-                .createdDate(LocalDate.now())
                 .fishType(fishType)
                 .farm(farm)
                 .build();

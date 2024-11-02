@@ -123,9 +123,10 @@ public class ManagerController {
         fishService.deleteFish(id);
         return ResponseEntity.noContent().build();
     }
+
     // farm
     @PostMapping("/farm/create-farm")
-    public ResponseEntity<FarmDto> createFarm(@RequestBody FarmForm farmForm) {
+    public ResponseEntity<FarmDto> createFarm(@ModelAttribute FarmForm farmForm) {
         FarmDto createFarm = farmService.createFarm(farmForm);
         return ResponseEntity.ok(createFarm);
     }
@@ -167,10 +168,10 @@ public class ManagerController {
         }
     }
 
-    @PostMapping("/fish-types/create")
-    public ResponseEntity<FishTypeDto> addFishType(@RequestBody FishTypeForm fishTypeForm) {
-        return ResponseEntity.ok(fishTypeService.createFishType(fishTypeForm));
-    }
+//    @PostMapping("/fish-types/create")
+//    public ResponseEntity<FishTypeDto> addFishType(@RequestBody FishTypeForm fishTypeForm) {
+//        return ResponseEntity.ok(fishTypeService.createFishType(fishTypeForm));
+//    }
 
     @PutMapping("/fish-types/update/{id}")
     public ResponseEntity<FishTypeDto> updateFishType(@PathVariable long id, @RequestBody FishTypeForm fishTypeForm) {
