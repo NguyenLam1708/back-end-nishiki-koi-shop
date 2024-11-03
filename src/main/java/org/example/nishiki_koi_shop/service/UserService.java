@@ -8,11 +8,19 @@ import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
-    void softDeleteUser(Long userId, Long loggedInUserId);
+    void softDeleteUser(Long id, Principal principal);
+
     void restoreUser(Long userId);
+
     UserDto getMyInfo();
-    UserDto getUserById(Long id);
+
+    UserDto getUserById(long id);
+
     List<UserDto> getAllUsers();
+
     UserDto updateUser(Long id, UserForm form);
+
     String changePassword(ChangePasswordForm request, Principal connectedUser);
+
+    UserDto updateMyInfo(long id, Principal principal, UserForm form);
 }

@@ -17,15 +17,9 @@ import java.security.Principal;
 public class UserController {
     private final UserService userService;
 
-
     @GetMapping("/myInfo")
     public ResponseEntity<UserDto> getMyInfo() {
         return ResponseEntity.ok(userService.getMyInfo());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserForm form) {
-        return ResponseEntity.ok(userService.updateUser(id, form));
     }
 
     @PutMapping("/change-password")
@@ -33,5 +27,9 @@ public class UserController {
         return ResponseEntity.ok(userService.changePassword(form, connectedUser));
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<UserDto> updateMyInfo(@PathVariable("id") long id, Principal principal,@RequestBody UserForm form){
+        return ResponseEntity.ok(userService.updateMyInfo(id, principal,form));
+    }
 
 }

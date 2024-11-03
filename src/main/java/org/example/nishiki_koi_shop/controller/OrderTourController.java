@@ -24,7 +24,7 @@ public class OrderTourController {
         OrderTourDto createdOrderTour = orderTourService.createOrderTour(orderTourForm, principal);
         return new ResponseEntity<>(createdOrderTour, HttpStatus.CREATED);
     }
-    @GetMapping("/user/{id}/history")
+    @GetMapping("/history/user/{id}")
     public ResponseEntity<List<OrderTourDto>> getOrderToursByUserId(@PathVariable long id, Principal principal) {
         List<OrderTourDto> orderTours = orderTourService.getOrderToursByUserId(id, principal);
         return new ResponseEntity<>(orderTours, HttpStatus.OK);

@@ -8,6 +8,7 @@ import org.example.nishiki_koi_shop.model.payload.ChangePasswordForm;
 import org.example.nishiki_koi_shop.model.payload.UserForm;
 import org.example.nishiki_koi_shop.repository.UserRepository;
 import org.example.nishiki_koi_shop.service.UserService;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,25 +29,37 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void softDeleteUser(Long userId, Long loggedInUserId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public void softDeleteUser(Long id, Principal principal) {
+        // Lấy tên người dùng từ Principal
+        String currentUserEmail = principal.getName();
+
+        // Tìm người dùng hiện tại trong cơ sở dữ liệu dựa trên email
+        User currentUser = userRepository.findByEmail(currentUserEmail)
+                .orElseThrow(() -> new RuntimeException("Current user not found"));
+
+        // Lấy ID của người dùng đang đăng nhập
+        long currentUserId = currentUser.getId();
+
+        // Tìm người dùng cần xóa
+        User userToDelete = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
 
         // Kiểm tra nếu người dùng đang đăng nhập
-        if (userId.equals(loggedInUserId)) {
-            throw new RuntimeException("can not delete user is logged in");
+        if (id.equals(currentUserId)) {
+            throw new RuntimeException("Cannot delete the currently logged-in user.");
         }
 
         // Kiểm tra nếu người dùng đã bị xóa mềm trước đó
-        if (user.getDeletedAt() != null) {
-            throw new RuntimeException("User is deleted at " + user.getDeletedAt());
+        if (userToDelete.getDeletedAt() != null) {
+            throw new RuntimeException("User was already deleted on: " + userToDelete.getDeletedAt());
         }
 
         // Thực hiện xóa mềm người dùng
-        user.setDeletedAt(LocalDate.now());
-        userRepository.save(user);
-        log.info("User with ID {} has been soft delete", userId);
+        userToDelete.setDeletedAt(LocalDate.now());
+        userRepository.save(userToDelete);
+        log.info("User with ID {} has been soft deleted by user with ID {}", id, currentUserId);
     }
+
     @Override
     public void restoreUser(Long userId) {
         User user = userRepository.findById(userId)
@@ -62,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(Long id) {
+    public UserDto getUserById(long id) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -117,14 +130,42 @@ public class UserServiceImpl implements UserService {
         user.setFullName(form.getFullName());
         user.setAddress(form.getAddress());
         user.setEmail(form.getEmail());
-        user.setPhoneNumber(form.getPhone());
+        user.setPhoneNumber(form.getPhoneNumber());
         user.setUsername(form.getUsername());
 
         userRepository.save(user);
         log.info("User with ID {} updated successfully", id);
         return UserDto.from(user);
     }
+    @Override
+    public UserDto updateMyInfo(long id, Principal principal, UserForm form) {
+        // Lấy thông tin người dùng đang đăng nhập từ Principal
+        String loggedInUserEmail = principal.getName();
+        User loggedInUser = userRepository.findByEmail(loggedInUserEmail)
+                .orElseThrow(() -> new RuntimeException("Logged in user not found"));
 
+        // Kiểm tra xem người dùng đang cố gắng cập nhật thông tin của chính họ
+        if (loggedInUser.getId() != id) {
+            throw new AccessDeniedException("You do not have permission to update this user.");
+        }
+
+        // Tìm kiếm người dùng theo ID
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Cập nhật thông tin người dùng từ form
+        user.setFullName(form.getFullName());
+        user.setPhoneNumber(form.getPhoneNumber());
+        user.setAddress(form.getAddress());
+        user.setUsername(form.getUsername());
+        user.setEmail(form.getEmail());
+
+        // Lưu lại thay đổi vào cơ sở dữ liệu
+        userRepository.save(user);
+
+        // Chuyển đổi và trả về thông tin người dùng đã cập nhật
+        return UserDto.from(user);
+    }
     @Override
     public String changePassword(ChangePasswordForm request, Principal connectedUser) {
         User user = userRepository.findByEmail(connectedUser.getName())

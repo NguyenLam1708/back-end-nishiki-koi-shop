@@ -5,13 +5,15 @@ import lombok.Data;
 import org.example.nishiki_koi_shop.model.entity.CartItem;
 import org.example.nishiki_koi_shop.model.payload.CartItemForm;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 public class CartItemDto {
     private long id;
     private long fishId;
     private int quantity;
-    private long price;
+    private BigDecimal price;
     private long cartId;
 
     public static CartItemDto fromCartItem(CartItem cartItem) {

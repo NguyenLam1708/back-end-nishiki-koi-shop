@@ -19,7 +19,6 @@ public class UserDto {
     private String fullName;
     private String phoneNumber;
     private String address;
-    private String roleName;
 
     public static UserDto from(User user) {
         return UserDto.builder()
@@ -29,7 +28,6 @@ public class UserDto {
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
                 .address(user.getAddress())
-                .roleName(user.getRole().getName())
                 .build();
     }
 }

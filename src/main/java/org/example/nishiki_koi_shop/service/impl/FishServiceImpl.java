@@ -1,6 +1,9 @@
 package org.example.nishiki_koi_shop.service.impl;
 
+import jakarta.persistence.GeneratedValue;
+import lombok.Generated;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.example.nishiki_koi_shop.model.entity.Farm;
 import org.example.nishiki_koi_shop.model.entity.Fish;
 import org.example.nishiki_koi_shop.model.dto.FishDto;

@@ -13,6 +13,7 @@ import org.example.nishiki_koi_shop.repository.FishRepository;
 import org.example.nishiki_koi_shop.service.CartItemService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,17 +48,22 @@ public class CartItemServiceImpl implements CartItemService {
                 .filter(item -> item.getFish().getFishId() == fish.getFishId())
                 .findFirst();
 
-        CartItem newItem = null;
+        CartItem newItem;
 
         if (existingItem.isPresent()) {
             // Nếu có, cập nhật số lượng
             CartItem itemToUpdate = existingItem.get();
-            // Cập nhật số lượng mới, kiểm tra tồn kho trước
+
+            // Tính toán số lượng mới và cập nhật
             int newQuantity = itemToUpdate.getQuantity() + cartItemForm.getQuantity();
             if (newQuantity > fish.getQuantity()) {
                 throw new RuntimeException("Số lượng yêu cầu vượt quá số lượng tồn kho của cá");
             }
             itemToUpdate.setQuantity(newQuantity);
+
+            // Cập nhật giá mới dựa trên số lượng mới
+            itemToUpdate.setPrice(fish.getPrice().multiply(BigDecimal.valueOf(newQuantity)));
+
             cartItemRepository.save(itemToUpdate);
             return CartItemDto.fromCartItem(itemToUpdate); // Trả về item đã cập nhật
         } else {
@@ -65,7 +71,7 @@ public class CartItemServiceImpl implements CartItemService {
             newItem = CartItem.builder()
                     .fish(fish)
                     .quantity(cartItemForm.getQuantity())
-                    .price(fish.getPrice()) // Lấy giá từ đối tượng Fish
+                    .price(fish.getPrice().multiply(BigDecimal.valueOf(cartItemForm.getQuantity()))) // Tính giá dựa trên số lượng
                     .cart(cart)
                     .build();
             cartItemRepository.save(newItem);
@@ -74,15 +80,16 @@ public class CartItemServiceImpl implements CartItemService {
         return CartItemDto.fromCartItem(newItem);
     }
 
-
-
     @Override
-    public void updateCartItem(Long cartItemId, CartItemForm cartItemForm) {
+    public CartItemDto updateCartItem(Long cartItemId, CartItemForm cartItemForm) {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("CartItem không tồn tại"));
+        Fish fish = cartItem.getFish();
 
         cartItem.setQuantity(cartItemForm.getQuantity());
+        cartItem.setPrice(fish.getPrice().multiply(BigDecimal.valueOf(cartItemForm.getQuantity())));
         cartItemRepository.save(cartItem);
+        return CartItemDto.fromCartItem(cartItem);
     }
     @Override
     public void deleteCartItem(Long cartItemId) {

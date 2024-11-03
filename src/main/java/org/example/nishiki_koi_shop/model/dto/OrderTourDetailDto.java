@@ -5,12 +5,14 @@ import lombok.Data;
 import org.example.nishiki_koi_shop.model.entity.OrderTour;
 import org.example.nishiki_koi_shop.model.entity.OrderTourDetail;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 public class OrderTourDetailDto {
     private long orderTourDetailId;
     private Integer numberOfPeople;
-    private long price;
+    private BigDecimal price;
     private long tourId;
     private OrderTourDto orderTour;
 

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/api/v1/order-tour-details")
 @RequiredArgsConstructor
@@ -21,8 +23,8 @@ public class OrderTourDetailController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderTourDetailDto> getOrderTourDetailById(@PathVariable long id) {
-        OrderTourDetailDto orderTourDetail = orderTourDetailService.getOrderTourDetailById(id);
+    public ResponseEntity<OrderTourDetailDto> getOrderTourDetailById(@PathVariable long id, Principal principal) {
+        OrderTourDetailDto orderTourDetail = orderTourDetailService.getOrderTourDetailById(id,principal);
         return new ResponseEntity<>(orderTourDetail, HttpStatus.OK);
     }
 

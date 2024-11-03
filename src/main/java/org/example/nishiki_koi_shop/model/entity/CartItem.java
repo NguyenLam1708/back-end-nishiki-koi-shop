@@ -3,6 +3,7 @@ package org.example.nishiki_koi_shop.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -19,7 +20,8 @@ public class CartItem {
     private long id;
 
     private int quantity;
-    private long price;
+
+    private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fish_id", nullable = false)
