@@ -32,13 +32,15 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-
-
     @Override
     public AuthDto login(SignInForm form) {
 
         User user = userRepository.findByEmail(form.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + form.getEmail()));
+
+        if (user.getDeletedAt() != null) {
+            throw new IllegalArgumentException("User account is deactivated. Please contact support.");
+        }
 
         Authentication authentication;
         try {
@@ -53,8 +55,6 @@ public class AuthServiceImpl implements AuthService {
         // Nếu xác thực thành công
         String accessToken = jwtTokenProvider.generateAccessToken(authentication);
         String refreshToken = jwtTokenProvider.generateRefreshToken(authentication);
-
-
 
         log.info("User {} logged in successfully", user.getEmail());
 

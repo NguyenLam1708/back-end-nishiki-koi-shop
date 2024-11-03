@@ -2,7 +2,7 @@ package org.example.nishiki_koi_shop.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -17,7 +17,7 @@ public class OrderTourDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orderTourDetailId;
     private Integer numberOfPeople;
-    private long price;
+    private BigDecimal price;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_tour_id", nullable = false)

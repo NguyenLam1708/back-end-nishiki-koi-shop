@@ -15,17 +15,7 @@ public class UserForm {
     private String fullName;
     private String username;
     private String email;
-    private String phone;
+    private String phoneNumber;
     private String address;
-
-    public static UserForm from(User user) {
-        return UserForm.builder()
-                .fullName(user.getFullName())
-                .email(user.getEmail())
-                .phone(user.getPhoneNumber())
-                .address(user.getAddress())
-                .username(user.getUsername())
-                .build();
-    }
 
 }

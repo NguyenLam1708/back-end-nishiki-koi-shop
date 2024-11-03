@@ -23,9 +23,10 @@ public class CartItemController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateCartItem(@PathVariable Long id, @RequestBody CartItemForm cartItemForm) {
-        cartItemService.updateCartItem(id, cartItemForm);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<CartItemDto> updateCartItem(@PathVariable Long id, @RequestBody CartItemForm cartItemForm) {
+        CartItemDto cartItemDto = cartItemService.updateCartItem(id, cartItemForm);
+
+        return new ResponseEntity<>(cartItemDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -40,7 +41,7 @@ public class CartItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
     // Xóa toàn bộ giỏ hàng
-    @DeleteMapping("/{cartId}/clear")
+    @DeleteMapping("/clear/{cartId}")
     public ResponseEntity<Void> deleteAllCartItems(@PathVariable long cartId) {
         cartItemService.deleteAllCartItems(cartId);
         return ResponseEntity.noContent().build();

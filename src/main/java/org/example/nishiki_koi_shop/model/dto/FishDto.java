@@ -4,12 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.nishiki_koi_shop.model.entity.Fish;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 public class FishDto {
     private Long fishId;
     private String name;
-    private long price;
+    private BigDecimal price;
     private String description;
     private String image;
     private long size;

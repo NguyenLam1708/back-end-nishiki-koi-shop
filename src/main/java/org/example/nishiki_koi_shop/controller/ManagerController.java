@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -26,14 +27,19 @@ public class ManagerController {
     private final FarmService farmService;
     private final FishTypeService fishTypeService;
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
-    }
-
     @GetMapping("/myInfo")
     public ResponseEntity<UserDto> getMyInfo() {
         return ResponseEntity.ok(userService.getMyInfo());
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateMyInfo(@PathVariable("id") long id, Principal principal,@RequestBody UserForm form){
+        return ResponseEntity.ok(userService.updateMyInfo(id, principal,form));
+    }
+
+    // user
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping("/users")
@@ -41,16 +47,20 @@ public class ManagerController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @DeleteMapping("users/{loggedInUserId}/soft-delete/{id}")
-    public ResponseEntity<String> softDeleteUser(@PathVariable("id") Long userId, @PathVariable("loggedInUserId") Long loggedInUserId) {
-        userService.softDeleteUser(userId, loggedInUserId);
+    @DeleteMapping("users/soft-delete/{id}")
+    public ResponseEntity<String> softDeleteUser(@PathVariable("id") Long userId, Principal principal) {
+        userService.softDeleteUser(userId, principal);
         return ResponseEntity.ok("Người dùng đã được xóa mềm thành công");
     }
 
-    @PutMapping("users/{id}/restore")
+    @PutMapping("users/restore/{id}")
     public ResponseEntity<String> restoreUser(@PathVariable("id") Long id) {
         userService.restoreUser(id);
         return ResponseEntity.ok("User restored successfully");
+    }
+    @PutMapping("users/update/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserForm form) {
+        return ResponseEntity.ok(userService.updateUser(id, form));
     }
 
     // OrderTour
@@ -78,8 +88,12 @@ public class ManagerController {
         List<OrderTourDetailDto> orderTourDetails = orderTourDetailService.getAllOrderTourDetails();
         return new ResponseEntity<>(orderTourDetails, HttpStatus.OK);
     }
-
-    @PutMapping("/order-tours/order-tour-detail/{id}")
+    @GetMapping("/order-tours/order-tour-detail/{id}")
+    public ResponseEntity<OrderTourDetailDto> getOrderTourDetailById(@PathVariable long id) {
+        OrderTourDetailDto orderTourDetail = orderTourDetailService.getOrderTourDetailById(id);
+        return new ResponseEntity<>(orderTourDetail, HttpStatus.OK);
+    }
+    @PutMapping("/order-tours/order-tour-detail/update/{id}")
     public ResponseEntity<OrderTourDetailDto> updateOrderTourDetail(
             @PathVariable long id, @RequestBody OrderTourDetailForm form) {
         OrderTourDetailDto updatedDetail = orderTourDetailService.updateOrderTourDetail(id, form);
@@ -104,13 +118,13 @@ public class ManagerController {
         return ResponseEntity.ok(fishDto);
     }
 
-    @PutMapping("/fish/{id}")
+    @PutMapping("/fish/update/{id}")
     public ResponseEntity<FishDto> updateFish(@PathVariable("id") Long id, @RequestBody FishForm fishForm) {
         FishDto updatedFish = fishService.updateFish(id, fishForm);
         return ResponseEntity.ok(updatedFish);
     }
 
-    @DeleteMapping("/fish/{id}")
+    @DeleteMapping("/fish/delete/{id}")
     public ResponseEntity<Void> deleteFish(@PathVariable Long id) {
         fishService.deleteFish(id);
         return ResponseEntity.noContent().build();

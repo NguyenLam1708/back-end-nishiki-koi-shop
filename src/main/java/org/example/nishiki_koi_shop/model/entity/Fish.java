@@ -3,6 +3,7 @@ package org.example.nishiki_koi_shop.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Fish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long fishId;
     private String name;
-    private long price;
+    private BigDecimal price;
     private String description;
     private String image;
     private long size;

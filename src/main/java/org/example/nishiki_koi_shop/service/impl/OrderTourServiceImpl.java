@@ -12,6 +12,8 @@ import org.example.nishiki_koi_shop.repository.OrderTourRepository;
 import org.example.nishiki_koi_shop.repository.UserRepository;
 import org.example.nishiki_koi_shop.service.OrderTourService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -113,7 +115,9 @@ public class OrderTourServiceImpl implements OrderTourService {
         return orders.stream().map(OrderTourDto::from).collect(Collectors.toList());
     }
     private long getUserIdFromPrincipal(Principal principal) {
-        String email = principal.getName();
+//        String email = principal.getName();
+        Authentication au = SecurityContextHolder.getContext().getAuthentication();
+        String email = au.getName();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return user.getId();
