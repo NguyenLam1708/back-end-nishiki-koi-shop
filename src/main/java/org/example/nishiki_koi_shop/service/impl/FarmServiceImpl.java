@@ -41,4 +41,15 @@ public class FarmServiceImpl implements FarmService {
         farm = farmRepository.save(farm);
         return FarmDto.from(farm);
     }
+
+    @Override
+    public FarmDto updateFarm(FarmForm farmForm) {
+        return null;
+    }
+
+    @Override
+    public FarmDto getFarmById(long id) {
+        Farm farm = farmRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID nong trai khong ton tai"));
+        return FarmDto.from(farm);
+    }
 }

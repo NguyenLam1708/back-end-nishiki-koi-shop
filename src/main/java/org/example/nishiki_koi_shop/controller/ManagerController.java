@@ -33,9 +33,10 @@ public class ManagerController {
     public ResponseEntity<UserDto> getMyInfo() {
         return ResponseEntity.ok(userService.getMyInfo());
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateMyInfo(@PathVariable("id") long id, Principal principal,@RequestBody UserForm form){
-        return ResponseEntity.ok(userService.updateMyInfo(id, principal,form));
+    public ResponseEntity<UserDto> updateMyInfo(@PathVariable("id") long id, Principal principal, @RequestBody UserForm form) {
+        return ResponseEntity.ok(userService.updateMyInfo(id, principal, form));
     }
 
     // user
@@ -60,6 +61,7 @@ public class ManagerController {
         userService.restoreUser(id);
         return ResponseEntity.ok("User restored successfully");
     }
+
     @PutMapping("users/update/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserForm form) {
         return ResponseEntity.ok(userService.updateUser(id, form));
@@ -90,11 +92,13 @@ public class ManagerController {
         List<OrderTourDetailDto> orderTourDetails = orderTourDetailService.getAllOrderTourDetails();
         return new ResponseEntity<>(orderTourDetails, HttpStatus.OK);
     }
+
     @GetMapping("/order-tours/order-tour-detail/{id}")
     public ResponseEntity<OrderTourDetailDto> getOrderTourDetailById(@PathVariable long id) {
         OrderTourDetailDto orderTourDetail = orderTourDetailService.getOrderTourDetailById(id);
         return new ResponseEntity<>(orderTourDetail, HttpStatus.OK);
     }
+
     @PutMapping("/order-tours/order-tour-detail/update/{id}")
     public ResponseEntity<OrderTourDetailDto> updateOrderTourDetail(
             @PathVariable long id, @RequestBody OrderTourDetailForm form) {
@@ -105,7 +109,7 @@ public class ManagerController {
     // Fish
     // Create
     @PostMapping("/fish/create-fish")
-    public ResponseEntity<FishDto> createFish(@RequestBody FishForm fishform) {
+    public ResponseEntity<FishDto> createFish(@ModelAttribute FishForm fishform) {
         FishDto createdFish = fishService.createFish(fishform);
         return ResponseEntity.ok(createdFish);
     }
@@ -139,6 +143,7 @@ public class ManagerController {
     }
 
     // farm
+    // create
     @PostMapping("/farm/create-farm")
     public ResponseEntity<FarmDto> createFarm(@RequestBody FarmForm farmForm) {
         FarmDto createFarm = farmService.createFarm(farmForm);
@@ -150,6 +155,13 @@ public class ManagerController {
     public ResponseEntity<List<FarmDto>> getAllFarms() {
         List<FarmDto> famrList = farmService.getAllFarm();
         return ResponseEntity.ok(famrList);
+    }
+
+    //find by ID
+    @GetMapping("/farm/{id}")
+    public ResponseEntity<FarmDto> getFarmById(@PathVariable("id") Long id) {
+        FarmDto farmDto = farmService.getFarmById(id);
+        return ResponseEntity.ok(farmDto);
     }
 
     //tour
@@ -187,6 +199,7 @@ public class ManagerController {
     public ResponseEntity<FishTypeDto> addFishType(@RequestBody FishTypeForm fishTypeForm) {
         return ResponseEntity.ok(fishTypeService.createFishType(fishTypeForm));
     }
+
     @PutMapping("/fish-types/update/{id}")
     public ResponseEntity<FishTypeDto> updateFishType(@PathVariable long id, @RequestBody FishTypeForm fishTypeForm) {
         FishTypeDto updatedFishType = fishTypeService.updateFishType(id, fishTypeForm);
