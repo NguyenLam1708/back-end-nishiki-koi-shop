@@ -18,6 +18,7 @@ public class FishTypeDto {
         return FishTypeDto.builder()
                 .fishTypeId(fishType.getFishTypeId())
                 .name(fishType.getName())
+                .createdDate(fishType.getCreatedDate())
                 .description(fishType.getDescription())
                 .build();
     }
