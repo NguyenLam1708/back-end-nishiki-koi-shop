@@ -8,4 +8,6 @@ import java.util.List;
 public interface FarmService {
     List<FarmDto> getAllFarm();
     FarmDto createFarm(FarmForm farmForm);
+    FarmDto updateFarm(FarmForm farmForm);
+    FarmDto getFarmById(long id);
 }
