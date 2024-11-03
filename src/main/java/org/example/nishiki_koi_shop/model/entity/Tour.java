@@ -46,4 +46,9 @@ public class Tour {
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Feedback> feedbackList;
+
+    // New method to return the tourId
+    public long getId() {
+        return tourId;
+    }
 }

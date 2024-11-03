@@ -1,47 +1,58 @@
 package org.example.nishiki_koi_shop.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import org.example.nishiki_koi_shop.model.dto.TourDto;
-import org.example.nishiki_koi_shop.model.entity.Farm;
 import org.example.nishiki_koi_shop.model.entity.Tour;
 import org.example.nishiki_koi_shop.model.payload.TourForm;
-import org.example.nishiki_koi_shop.repository.FarmRepository;
 import org.example.nishiki_koi_shop.repository.TourRepository;
 import org.example.nishiki_koi_shop.service.TourService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class TourServiceImpl implements TourService {
-    private final TourRepository tourRepository;
-    private final FarmRepository farmRepository;
+    @Autowired
+    private TourRepository tourRepository;
 
     @Override
-    public TourDto createTour(TourForm tourForm) {
-        Farm farm = farmRepository.findById(tourForm.getFarmId()).orElseThrow(() -> new IllegalArgumentException("ID nông trại không hợp lệ!"));
-
-        Tour tour = Tour.builder()
-                .name(tourForm.getTourName())
-                .description(tourForm.getTourDescription())
-                .startDate(tourForm.getTourStartDate())
-                .endDate(tourForm.getTourEndDate())
-                .price(tourForm.getTourPrice())
-                .farm(farm)
-                .maxParticipants(tourForm.getTourCapacity())
-                .build();
-        tour = tourRepository.save(tour);
-        return TourDto.from(tour);
+    public List<Tour> getAllTours() {
+        return tourRepository.findAll();
     }
 
     @Override
-    public List<TourDto> getAllTour() {
-        return tourRepository.findAll().stream()
-                .map(TourDto::from)
-                .collect(Collectors.toList());
+    public Optional<Tour> getTourById(Long id) {
+        return tourRepository.findById(id);
     }
 
+    @Override
+    public Tour saveTour(Tour tour) {
+        return tourRepository.save(tour);
+    }
 
+    @Override
+    public Tour updateTour(Long id, Tour updatedTour) {
+        return tourRepository.findById(id).map(tour -> {
+            tour.setName(updatedTour.getName());
+            tour.setDescription(updatedTour.getDescription());
+            tour.setPrice(updatedTour.getPrice());
+            return tourRepository.save(tour);
+        }).orElse(null);
+    }
+
+    @Override
+    public void deleteTour(Long id) {
+        tourRepository.deleteById(id);
+    }
+    
+    // New createTour method to handle TourForm input
+    @Override
+    public Tour createTour(TourForm form) {
+        Tour tour = new Tour();
+        tour.setName(form.getName());
+        tour.setDescription(form.getDescription());
+        tour.setPrice(form.getPrice());
+        // Populate other fields as necessary
+        return tourRepository.save(tour);
+    }
 }

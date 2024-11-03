@@ -14,4 +14,5 @@ public class FarmForm {
     private String image;
     private String contactInfo;
     private LocalDate createdDate;
+    private String ownerName;  // Thêm trường ownerName
 }
