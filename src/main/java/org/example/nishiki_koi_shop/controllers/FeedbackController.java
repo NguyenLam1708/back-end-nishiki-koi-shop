@@ -1,5 +1,6 @@
-package org.example.nishiki_koi_shop.controller;
+package org.example.nishiki_koi_shop.controllers;
 
+import jakarta.validation.Valid;
 import org.example.nishiki_koi_shop.dto.FeedbackDto;
 import org.example.nishiki_koi_shop.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
