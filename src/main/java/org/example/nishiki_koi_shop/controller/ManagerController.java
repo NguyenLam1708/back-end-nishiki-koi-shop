@@ -4,6 +4,7 @@ package org.example.nishiki_koi_shop.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.nishiki_koi_shop.model.dto.*;
 import org.example.nishiki_koi_shop.model.entity.FishType;
+import org.example.nishiki_koi_shop.model.entity.OrderFishDetail;
 import org.example.nishiki_koi_shop.model.payload.*;
 import org.example.nishiki_koi_shop.service.*;
 import org.example.nishiki_koi_shop.service.impl.FarmServiceImpl;
@@ -28,7 +29,8 @@ public class ManagerController {
     private final FarmService farmService;
     private final FishTypeService fishTypeService;
     private final TourServiceImpl tourServiceImpl;
-
+    private final OrderFishService orderFishService;
+    private final OrderFishDetailService orderFishDetailService;
     @GetMapping("/myInfo")
     public ResponseEntity<UserDto> getMyInfo() {
         return ResponseEntity.ok(userService.getMyInfo());
@@ -105,6 +107,35 @@ public class ManagerController {
         OrderTourDetailDto updatedDetail = orderTourDetailService.updateOrderTourDetail(id, form);
         return new ResponseEntity<>(updatedDetail, HttpStatus.OK);
     }
+    // OrderFish
+
+    @GetMapping("/order-fishes/get-all-order-fishes")
+    public ResponseEntity<List<OrderFishDto>> getAllOrderFishes() {
+        return new ResponseEntity<>(orderFishService.getAllOrderFishes(), HttpStatus.OK);
+    }
+
+    @GetMapping("/order-fishes/{id}")
+    public ResponseEntity<OrderFishDto> getOrderFishById(@PathVariable long id) {
+        return new ResponseEntity<>(orderFishService.getOrderFishById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/order-fishes/update/{id}")
+    public ResponseEntity<OrderFishDto> updateOrderFish(@PathVariable long id, @RequestBody OrderFishForm orderFishForm) {
+        return new ResponseEntity<>(orderFishService.updateOrderFish(id, orderFishForm), HttpStatus.OK);
+    }
+    //OrderFishDetail
+    @GetMapping("/order-fishes/order-fishes-detail/{id}")
+    public ResponseEntity<OrderFishDetailDto> getOrderFishDetailById(@PathVariable("id") long id){
+        return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailById(id),HttpStatus.OK);
+    };
+    @GetMapping("/order-fishes/order-fishes-detail")
+    public ResponseEntity<List<OrderFishDetailDto>> getAllOrderFishDetails() {
+        return new ResponseEntity<>(orderFishDetailService.getAllOrderFishDetails(),HttpStatus.OK);
+    }
+    @PutMapping("/order-fishes/order-fishes-detail/update/{id}")
+    public ResponseEntity<OrderFishDetailDto> updateOrderFishDetail(@PathVariable("id") long id,@RequestBody OrderFishDetailForm orderFishDetailForm){
+        return new ResponseEntity<>(orderFishDetailService.updateOrderFishDetail(id,orderFishDetailForm), HttpStatus.OK);
+    };
 
     // Fish
     // Create

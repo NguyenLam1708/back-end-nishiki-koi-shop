@@ -46,7 +46,9 @@ public class SecurityConfig {
                                 "/api/v1/cart",
                                 "/api/v1/cart/items",
                                 "/api/v1/fish",
-                                ("/api/v1/fish-types")).hasAuthority("ROLE_CUSTOMER")
+                                "/api/v1/fish-types",
+                                "/api/v1/order-fishes",
+                                "/api/order-fish-details").hasAuthority("ROLE_CUSTOMER")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
