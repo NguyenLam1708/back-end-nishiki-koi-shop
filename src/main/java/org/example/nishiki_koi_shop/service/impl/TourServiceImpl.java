@@ -31,6 +31,7 @@ public class TourServiceImpl implements TourService {
                 .endDate(tourForm.getTourEndDate())
                 .price(tourForm.getTourPrice())
                 .farm(farm)
+                .image(tourForm.getTourImage())
                 .maxParticipants(tourForm.getTourCapacity())
                 .build();
         tour = tourRepository.save(tour);
@@ -54,6 +55,7 @@ public class TourServiceImpl implements TourService {
         tour.setStartDate(tourForm.getTourStartDate());
         tour.setEndDate(tourForm.getTourEndDate());
         tour.setPrice(tourForm.getTourPrice());
+        tour.setImage(tourForm.getTourImage());
         tour.setCreatedDate(LocalDate.now());
         tour.setFarm(farm);
 

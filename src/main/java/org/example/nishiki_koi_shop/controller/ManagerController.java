@@ -3,13 +3,8 @@ package org.example.nishiki_koi_shop.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.nishiki_koi_shop.model.dto.*;
-import org.example.nishiki_koi_shop.model.entity.FishType;
-import org.example.nishiki_koi_shop.model.entity.OrderFishDetail;
 import org.example.nishiki_koi_shop.model.payload.*;
 import org.example.nishiki_koi_shop.service.*;
-import org.example.nishiki_koi_shop.service.impl.FarmServiceImpl;
-import org.example.nishiki_koi_shop.service.impl.FishServiceImpl;
-import org.example.nishiki_koi_shop.service.impl.TourServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +26,8 @@ public class ManagerController {
     private final TourService tourService;
     private final OrderFishService orderFishService;
     private final OrderFishDetailService orderFishDetailService;
+    private final FeedBackService feedBackService;
+
     @GetMapping("/myInfo")
     public ResponseEntity<UserDto> getMyInfo() {
         return ResponseEntity.ok(userService.getMyInfo());
@@ -161,7 +158,7 @@ public class ManagerController {
 
     // Update
     @PutMapping("/fish/update/{id}")
-    public ResponseEntity<FishDto> updateFish(@PathVariable("id") Long id, @RequestBody FishForm fishForm) {
+    public ResponseEntity<FishDto> updateFish(@PathVariable("id") Long id, @ModelAttribute FishForm fishForm) {
         FishDto updatedFish = fishService.updateFish(id, fishForm);
         return ResponseEntity.ok(updatedFish);
     }
@@ -176,7 +173,7 @@ public class ManagerController {
     // farm
     // create
     @PostMapping("/farm/create-farm")
-    public ResponseEntity<FarmDto> createFarm(@RequestBody FarmForm farmForm) {
+    public ResponseEntity<FarmDto> createFarm(@ModelAttribute FarmForm farmForm) {
         FarmDto createFarm = farmService.createFarm(farmForm);
         return ResponseEntity.ok(createFarm);
     }
@@ -208,7 +205,7 @@ public class ManagerController {
     //tour
     //Create
     @PostMapping("/tour/create-tour")
-    public ResponseEntity<TourDto> createTour(@RequestBody TourForm tourForm) {
+    public ResponseEntity<TourDto> createTour(@ModelAttribute TourForm tourForm) {
         TourDto createTour = tourService.createTour(tourForm);
         return ResponseEntity.ok(createTour);
     }
@@ -225,7 +222,7 @@ public class ManagerController {
     }
 
     @PutMapping("tour/update/{id}")
-    public ResponseEntity<TourDto> updateTour(@PathVariable("id") long id, @RequestBody TourForm tourForm) {
+    public ResponseEntity<TourDto> updateTour(@PathVariable("id") long id, @ModelAttribute TourForm tourForm) {
         return new ResponseEntity<>(tourService.updateTour(id,tourForm),HttpStatus.OK);
     }
     @DeleteMapping("/tour/delete/{id}")
@@ -268,5 +265,23 @@ public class ManagerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+    // feed back
+    @GetMapping("/feedbacks/get-all-feedback")
+    public ResponseEntity<List<FeedbackDto>> getAllFeedbacks(){
+        return new ResponseEntity<>(feedBackService.getAllFeedbacks(),HttpStatus.OK);
+    };
+    @GetMapping("/feedbacks/{id}")
+    public ResponseEntity<FeedbackDto> getFeedbackById(@PathVariable("id") long id){
+        return new ResponseEntity<>(feedBackService.getFeedbackById(id), HttpStatus.OK);
+    };
+    @PutMapping("/feedbacks/update/{id}")
+    public ResponseEntity<FeedbackDto> updateFeedback(@PathVariable("id") long id, @RequestBody FeedbackForm feedbackForm){
+        return new ResponseEntity<>(feedBackService.updateFeedback(id, feedbackForm), HttpStatus.OK);
+    };
+    @DeleteMapping("/feedbacks/delete/{id}")
+    public ResponseEntity<Void> deleteFeedback(@PathVariable("id") long id){
+        feedBackService.deleteFeedback(id);
+        return ResponseEntity.noContent().build();
+    };
 }
 

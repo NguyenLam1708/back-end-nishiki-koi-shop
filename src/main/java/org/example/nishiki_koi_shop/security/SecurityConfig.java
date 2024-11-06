@@ -50,7 +50,8 @@ public class SecurityConfig {
                                 "/api/v1/order-fishes",
                                 "/api/order-fish-details",
                                 "/api/v1/farms",
-                                "/api/v1/tours").hasAuthority("ROLE_CUSTOMER")
+                                "/api/v1/tours",
+                                "/api/v1/feedbacks").hasAuthority("ROLE_CUSTOMER")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
