@@ -28,7 +28,7 @@ public class ManagerController {
     private final FishService fishService;
     private final FarmService farmService;
     private final FishTypeService fishTypeService;
-    private final TourServiceImpl tourServiceImpl;
+    private final TourService tourService;
     private final OrderFishService orderFishService;
     private final OrderFishDetailService orderFishDetailService;
     @GetMapping("/myInfo")
@@ -195,21 +195,44 @@ public class ManagerController {
         return ResponseEntity.ok(farmDto);
     }
 
+    @PutMapping("/farm/update/{id}")
+    public ResponseEntity<FarmDto> updateFarm(@PathVariable("id") Long id, @ModelAttribute FarmForm farmForm) {
+        return new ResponseEntity<>(farmService.updateFarm(id, farmForm), HttpStatus.OK);
+    }
+    @DeleteMapping("/farm/delete/{id}")
+    public ResponseEntity<Void> deleteFarm(@PathVariable Long id) {
+        farmService.deleteFarm(id);
+        return ResponseEntity.noContent().build();
+    }
+
     //tour
     //Create
     @PostMapping("/tour/create-tour")
-    public ResponseEntity<TourDto> createTour(@ModelAttribute TourForm tourForm) {
-        TourDto createTour = tourServiceImpl.createTour(tourForm);
+    public ResponseEntity<TourDto> createTour(@RequestBody TourForm tourForm) {
+        TourDto createTour = tourService.createTour(tourForm);
         return ResponseEntity.ok(createTour);
     }
 
     //Read(All)
     @GetMapping("/tour/get-all-tour")
     public ResponseEntity<List<TourDto>> getAllTour() {
-        List<TourDto> tourList = tourServiceImpl.getAllTour();
+        List<TourDto> tourList = tourService.getAllTour();
         return ResponseEntity.ok(tourList);
     }
+    @GetMapping("/tour/{id}")
+    public ResponseEntity<TourDto> getTourById(@PathVariable("id") long id) {
+        return new ResponseEntity<>(tourService.getTourById(id), HttpStatus.OK);
+    }
 
+    @PutMapping("tour/update/{id}")
+    public ResponseEntity<TourDto> updateTour(@PathVariable("id") long id, @RequestBody TourForm tourForm) {
+        return new ResponseEntity<>(tourService.updateTour(id,tourForm),HttpStatus.OK);
+    }
+    @DeleteMapping("/tour/delete/{id}")
+    public ResponseEntity<Void> deleteTour(@PathVariable Long id) {
+        tourService.deleteTour(id);
+        return ResponseEntity.noContent().build();
+    }
     // fish type
 
     @GetMapping("/fish-types/get-all-fish-types")
