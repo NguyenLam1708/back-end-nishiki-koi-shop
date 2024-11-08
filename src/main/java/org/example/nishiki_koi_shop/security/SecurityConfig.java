@@ -40,18 +40,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers("/api/v1/manager/**").hasAuthority("ROLE_MANAGER")
-                        .requestMatchers("/api/v1/users/**",
-                                "/api/v1/order-tours",
-                                "/api/v1/order-tour-details",
-                                "/api/v1/cart",
-                                "/api/v1/cart/items",
-                                "/api/v1/fish",
-                                "/api/v1/fish-types",
-                                "/api/v1/order-fishes",
-                                "/api/order-fish-details",
-                                "/api/v1/farms",
-                                "/api/v1/tours",
-                                "/api/v1/feedbacks").hasAuthority("ROLE_CUSTOMER")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
