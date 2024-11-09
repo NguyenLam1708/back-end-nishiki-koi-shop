@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class FarmDto {
-    private Long farmId;
+    private Long id;
     private String name;
     private String description;
     private String location;
@@ -20,7 +20,7 @@ public class FarmDto {
 
     public static FarmDto from(Farm farm) {
         return FarmDto.builder()
-                .farmId(farm.getFarmId())
+                .id(farm.getFarmId())
                 .name(farm.getName())
                 .description(farm.getDescription())
                 .contactInfo(farm.getContactInfo())

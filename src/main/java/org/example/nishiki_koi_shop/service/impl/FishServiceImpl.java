@@ -12,6 +12,7 @@ import org.example.nishiki_koi_shop.model.payload.FishForm;
 import org.example.nishiki_koi_shop.repository.FarmRepository;
 import org.example.nishiki_koi_shop.repository.FishRepository;
 import org.example.nishiki_koi_shop.repository.FishTypeRepository;
+import org.example.nishiki_koi_shop.service.CloudinaryService;
 import org.example.nishiki_koi_shop.service.FishService;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class FishServiceImpl implements FishService {
     private final FishRepository fishRepository;
     private final FishTypeRepository fishTypeRepository;
     private final FarmRepository farmRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     public FishDto createFish(FishForm fishForm) {
@@ -32,7 +34,7 @@ public class FishServiceImpl implements FishService {
         FishType fishType = fishTypeRepository.findById(fishTypeId)
                 .orElseThrow(() -> new IllegalArgumentException("ID loại cá không hợp lệ"));
 
-        Farm farm = farmRepository.findById(fishForm.getFarmId())
+        Farm farm = farmRepository.findById(Long.valueOf(fishForm.getFarmId()))
                 .orElseThrow(() -> new IllegalArgumentException("ID nông trại không hợp lệ"));
 
         Fish fish = Fish.builder()
@@ -94,6 +96,10 @@ public class FishServiceImpl implements FishService {
         if (!fishRepository.existsById(id)) {
             throw new RuntimeException("Fish not found");
         }
+        Fish fish = fishRepository.findById(id).orElseThrow(() -> new RuntimeException("Fish not found"));
+        String imagePublicId = cloudinaryService.getPublicIdFromImgUrl(fish.getImage());
+        System.out.println("Public Id:" + imagePublicId);
+        cloudinaryService.deleteImage(imagePublicId);
         fishRepository.deleteById(id);
     }
 }

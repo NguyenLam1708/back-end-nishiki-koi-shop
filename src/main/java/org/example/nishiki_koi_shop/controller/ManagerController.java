@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class ManagerController {
     private final OrderFishService orderFishService;
     private final OrderFishDetailService orderFishDetailService;
     private final FeedBackService feedBackService;
+    private final CloudinaryService cloudinaryService;
 
     @GetMapping("/myInfo")
     public ResponseEntity<UserDto> getMyInfo() {
@@ -120,19 +122,22 @@ public class ManagerController {
     public ResponseEntity<OrderFishDto> updateOrderFish(@PathVariable long id, @RequestBody OrderFishForm orderFishForm) {
         return new ResponseEntity<>(orderFishService.updateOrderFish(id, orderFishForm), HttpStatus.OK);
     }
+
     //OrderFishDetail
     @GetMapping("/order-fishes/order-fishes-detail/{id}")
-    public ResponseEntity<OrderFishDetailDto> getOrderFishDetailById(@PathVariable("id") long id){
-        return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailById(id),HttpStatus.OK);
-    };
+    public ResponseEntity<OrderFishDetailDto> getOrderFishDetailById(@PathVariable("id") long id) {
+        return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailById(id), HttpStatus.OK);
+    }
+
     @GetMapping("/order-fishes/order-fishes-detail")
     public ResponseEntity<List<OrderFishDetailDto>> getAllOrderFishDetails() {
-        return new ResponseEntity<>(orderFishDetailService.getAllOrderFishDetails(),HttpStatus.OK);
+        return new ResponseEntity<>(orderFishDetailService.getAllOrderFishDetails(), HttpStatus.OK);
     }
+
     @PutMapping("/order-fishes/order-fishes-detail/update/{id}")
-    public ResponseEntity<OrderFishDetailDto> updateOrderFishDetail(@PathVariable("id") long id,@RequestBody OrderFishDetailForm orderFishDetailForm){
-        return new ResponseEntity<>(orderFishDetailService.updateOrderFishDetail(id,orderFishDetailForm), HttpStatus.OK);
-    };
+    public ResponseEntity<OrderFishDetailDto> updateOrderFishDetail(@PathVariable("id") long id, @RequestBody OrderFishDetailForm orderFishDetailForm) {
+        return new ResponseEntity<>(orderFishDetailService.updateOrderFishDetail(id, orderFishDetailForm), HttpStatus.OK);
+    }
 
     // Fish
     // Create
@@ -196,6 +201,7 @@ public class ManagerController {
     public ResponseEntity<FarmDto> updateFarm(@PathVariable("id") Long id, @ModelAttribute FarmForm farmForm) {
         return new ResponseEntity<>(farmService.updateFarm(id, farmForm), HttpStatus.OK);
     }
+
     @DeleteMapping("/farm/delete/{id}")
     public ResponseEntity<Void> deleteFarm(@PathVariable Long id) {
         farmService.deleteFarm(id);
@@ -216,6 +222,7 @@ public class ManagerController {
         List<TourDto> tourList = tourService.getAllTour();
         return ResponseEntity.ok(tourList);
     }
+
     @GetMapping("/tour/{id}")
     public ResponseEntity<TourDto> getTourById(@PathVariable("id") long id) {
         return new ResponseEntity<>(tourService.getTourById(id), HttpStatus.OK);
@@ -223,8 +230,9 @@ public class ManagerController {
 
     @PutMapping("tour/update/{id}")
     public ResponseEntity<TourDto> updateTour(@PathVariable("id") long id, @ModelAttribute TourForm tourForm) {
-        return new ResponseEntity<>(tourService.updateTour(id,tourForm),HttpStatus.OK);
+        return new ResponseEntity<>(tourService.updateTour(id, tourForm), HttpStatus.OK);
     }
+
     @DeleteMapping("/tour/delete/{id}")
     public ResponseEntity<Void> deleteTour(@PathVariable Long id) {
         tourService.deleteTour(id);
@@ -265,23 +273,43 @@ public class ManagerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
     // feed back
     @GetMapping("/feedbacks/get-all-feedback")
-    public ResponseEntity<List<FeedbackDto>> getAllFeedbacks(){
-        return new ResponseEntity<>(feedBackService.getAllFeedbacks(),HttpStatus.OK);
-    };
+    public ResponseEntity<List<FeedbackDto>> getAllFeedbacks() {
+        return new ResponseEntity<>(feedBackService.getAllFeedbacks(), HttpStatus.OK);
+    }
+
+    ;
+
     @GetMapping("/feedbacks/{id}")
-    public ResponseEntity<FeedbackDto> getFeedbackById(@PathVariable("id") long id){
+    public ResponseEntity<FeedbackDto> getFeedbackById(@PathVariable("id") long id) {
         return new ResponseEntity<>(feedBackService.getFeedbackById(id), HttpStatus.OK);
-    };
+    }
+
+    ;
+
     @PutMapping("/feedbacks/update/{id}")
-    public ResponseEntity<FeedbackDto> updateFeedback(@PathVariable("id") long id, @RequestBody FeedbackForm feedbackForm){
+    public ResponseEntity<FeedbackDto> updateFeedback(@PathVariable("id") long id, @RequestBody FeedbackForm feedbackForm) {
         return new ResponseEntity<>(feedBackService.updateFeedback(id, feedbackForm), HttpStatus.OK);
-    };
+    }
+
+    ;
+
     @DeleteMapping("/feedbacks/delete/{id}")
-    public ResponseEntity<Void> deleteFeedback(@PathVariable("id") long id){
+    public ResponseEntity<Void> deleteFeedback(@PathVariable("id") long id) {
         feedBackService.deleteFeedback(id);
         return ResponseEntity.noContent().build();
-    };
+    }
+
+    //xoa anh
+    @DeleteMapping("/delete-image/{publicId}")
+    public ResponseEntity<Map<String, Object>> deleteImage(@PathVariable("publicId") String id) {
+        Map<String, Object> result = cloudinaryService.deleteImage(id);
+        if (result == null || !"ok".equals(result.get("result"))) {
+            return ResponseEntity.status(500).body(Map.of("message","Failed to delete image"));
+        }
+        return ResponseEntity.noContent().build();
+    }
 }
 
