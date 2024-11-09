@@ -9,14 +9,14 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class FishTypeDto {
-    private long fishTypeId;
+    private long id;
     private String name;
     private String description;
     private LocalDate createdDate;
 
     public static FishTypeDto fromFishType(FishType fishType) {
         return FishTypeDto.builder()
-                .fishTypeId(fishType.getFishTypeId())
+                .id(fishType.getFishTypeId())
                 .name(fishType.getName())
                 .createdDate(fishType.getCreatedDate())
                 .description(fishType.getDescription())
