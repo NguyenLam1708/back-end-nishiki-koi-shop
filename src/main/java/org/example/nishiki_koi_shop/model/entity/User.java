@@ -28,7 +28,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
     private String fullName;
-    private String profilePicture;
     private String phoneNumber;
     private String address;
     private LocalDate createdDate;

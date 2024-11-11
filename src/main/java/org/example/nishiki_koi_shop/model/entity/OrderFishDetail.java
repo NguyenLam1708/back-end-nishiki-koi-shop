@@ -2,7 +2,7 @@ package org.example.nishiki_koi_shop.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -27,6 +27,7 @@ public class OrderFishDetail {
     private Fish fish;
 
     private Integer quantity;
-    private long price;
-    private LocalDate deletedAt;
+
+    private BigDecimal price;
+
 }

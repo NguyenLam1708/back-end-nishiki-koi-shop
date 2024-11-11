@@ -1,5 +1,6 @@
 package org.example.nishiki_koi_shop.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,9 +27,15 @@ public class Tour {
     private LocalDate startDate;
     private LocalDate endDate;
     private long price;
-    private Date createdDate;
-    private Integer max_participants;
-    private LocalDate deletedAt; // trường cho xóa mềm
+    private Integer maxParticipants;
+
+    @Column(updatable = false)
+    private LocalDate createdDate;
+
+    @PrePersist
+    private void onCreate() {
+        this.createdDate = LocalDate.now();
+    }
 
     @ManyToOne
     @JoinColumn(name = "farm_id", nullable = false)
@@ -39,4 +46,9 @@ public class Tour {
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Feedback> feedbackList;
+
+    // New method to return the tourId
+    public long getId() {
+        return tourId;
+    }
 }

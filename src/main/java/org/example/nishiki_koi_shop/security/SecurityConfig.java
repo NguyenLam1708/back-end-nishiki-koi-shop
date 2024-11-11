@@ -20,8 +20,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.Arrays;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -32,7 +30,6 @@ public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/auth/login", "/api/v1/auth/register", "/api/v1/auth/refresh"
-
     };
 
     @Bean
@@ -43,6 +40,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers("/api/v1/manager/**").hasAuthority("ROLE_MANAGER")
+                        .requestMatchers("/api/v1/users/**",
+                                "/api/v1/order-tours",
+                                "/api/v1/order-tour-details",
+                                "/api/v1/cart",
+                                "/api/v1/cart/items",
+                                "/api/v1/fish",
+                                ("/api/v1/fish-types")).hasAuthority("ROLE_CUSTOMER")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
@@ -54,9 +58,10 @@ public class SecurityConfig {
         return http.build();
     }
 
-    private CorsConfigurationSource corsConfigurationSource() {
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3001"); // Thay đổi nếu cần
+        configuration.addAllowedOrigin("http://localhost:3000"); // Thay đổi nếu cần
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true); // Nếu cần hỗ trợ cookies hoặc authorization headers
@@ -75,4 +80,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
 }

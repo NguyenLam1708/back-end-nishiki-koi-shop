@@ -19,10 +19,13 @@ public class FishType {
     private long fishTypeId;
 
     private String name;
+    @Column(length = 3000)
     private String description;
-    private LocalDate deletedAt;
 
     @OneToMany(mappedBy = "fishType")
     private List<Fish> fish;
+
+    private LocalDate createdDate;
+
 
 }
