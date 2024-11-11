@@ -6,8 +6,10 @@ import org.example.nishiki_koi_shop.model.dto.*;
 import org.example.nishiki_koi_shop.model.payload.*;
 import org.example.nishiki_koi_shop.service.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -162,8 +164,8 @@ public class ManagerController {
     }
 
     // Update
-    @PutMapping("/fish/update/{id}")
-    public ResponseEntity<FishDto> updateFish(@PathVariable("id") Long id, @ModelAttribute FishForm fishForm) {
+    @PutMapping(value = "/fish/update/{id}")
+    public ResponseEntity<FishDto> updateFish(@PathVariable Long id, @ModelAttribute FishForm fishForm) {
         FishDto updatedFish = fishService.updateFish(id, fishForm);
         return ResponseEntity.ok(updatedFish);
     }
@@ -307,7 +309,7 @@ public class ManagerController {
     public ResponseEntity<Map<String, Object>> deleteImage(@PathVariable("publicId") String id) {
         Map<String, Object> result = cloudinaryService.deleteImage(id);
         if (result == null || !"ok".equals(result.get("result"))) {
-            return ResponseEntity.status(500).body(Map.of("message","Failed to delete image"));
+            return ResponseEntity.status(500).body(Map.of("message", "Failed to delete image"));
         }
         return ResponseEntity.noContent().build();
     }

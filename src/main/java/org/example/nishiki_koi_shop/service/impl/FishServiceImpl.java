@@ -1,9 +1,6 @@
 package org.example.nishiki_koi_shop.service.impl;
 
-import jakarta.persistence.GeneratedValue;
-import lombok.Generated;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.example.nishiki_koi_shop.model.entity.Farm;
 import org.example.nishiki_koi_shop.model.entity.Fish;
 import org.example.nishiki_koi_shop.model.dto.FishDto;
@@ -15,9 +12,10 @@ import org.example.nishiki_koi_shop.repository.FishTypeRepository;
 import org.example.nishiki_koi_shop.service.CloudinaryService;
 import org.example.nishiki_koi_shop.service.FishService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +39,7 @@ public class FishServiceImpl implements FishService {
                 .name(fishForm.getName())
                 .price(fishForm.getPrice())
                 .description(fishForm.getDescription())
-                .image(fishForm.getImage())
+                .image(cloudinaryService.handleUploadImg(fishForm.getImage(), "fish"))
                 .size(fishForm.getSize())
                 .quantity(fishForm.getQuantity())
                 .fishType(fishType)
@@ -75,10 +73,15 @@ public class FishServiceImpl implements FishService {
         fish.setName(fishForm.getName());
         fish.setPrice(fishForm.getPrice());
         fish.setDescription(fishForm.getDescription());
-        fish.setImage(fishForm.getImage());
         fish.setSize(fishForm.getSize());
         fish.setQuantity(fishForm.getQuantity());
 
+        if (fishForm.getImage() != null) {
+            String publicId = cloudinaryService.getPublicIdFromImgUrl(fish.getImage(), "fish");
+            Map<String, Object> result = cloudinaryService.deleteImage(publicId);
+            String imgUrl = cloudinaryService.handleUploadImg(fishForm.getImage(), "fish");
+            fish.setImage(imgUrl);
+        }
         FishType fishType = fishTypeRepository.findById(fishForm.getFishTypeId())
                 .orElseThrow(() -> new IllegalArgumentException("FishType ID không hợp lệ"));
         fish.setFishType(fishType);
@@ -97,9 +100,9 @@ public class FishServiceImpl implements FishService {
             throw new RuntimeException("Fish not found");
         }
         Fish fish = fishRepository.findById(id).orElseThrow(() -> new RuntimeException("Fish not found"));
-        String imagePublicId = cloudinaryService.getPublicIdFromImgUrl(fish.getImage());
-        System.out.println("Public Id:" + imagePublicId);
+        String imagePublicId = cloudinaryService.getPublicIdFromImgUrl(fish.getImage(), "fish");
+
         cloudinaryService.deleteImage(imagePublicId);
         fishRepository.deleteById(id);
     }
-}
+};

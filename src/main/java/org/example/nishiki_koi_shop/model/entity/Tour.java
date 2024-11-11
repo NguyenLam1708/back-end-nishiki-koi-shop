@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -38,8 +40,10 @@ public class Tour {
         this.createdDate = LocalDate.now();
     }
 
+    //khi xoa 1 farm bat ki thi se khong con 1 tour nao cua farm do xuat hien nua
     @ManyToOne
     @JoinColumn(name = "farm_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Farm farm;
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
