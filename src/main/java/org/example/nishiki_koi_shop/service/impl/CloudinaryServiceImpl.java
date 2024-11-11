@@ -5,7 +5,9 @@ import org.example.nishiki_koi_shop.service.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cloudinary.utils.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,15 +21,13 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     }
 
     @Override
-    public String getPublicIdFromImgUrl(String imgUrl) {
-        String pattern = ".*/upload/v[0-9]+/([^/.]+)";
-        Pattern regex = Pattern.compile(pattern);
-        Matcher matcher = regex.matcher(imgUrl);
-        if (matcher.find()) {
-            return matcher.group(1); // Phần publicId
-        } else {
-            throw new IllegalArgumentException("URL không đúng định dạng");
+    public String getPublicIdFromImgUrl(String imgUrl, String folder) {
+        String baseUrl = folder + "/";
+        int indexBaseUrl = imgUrl.lastIndexOf(baseUrl);
+        if (indexBaseUrl != -1) {
+            return imgUrl.substring(indexBaseUrl, imgUrl.lastIndexOf('.'));
         }
+        return null;
     }
 
     @Override
@@ -37,8 +37,22 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             Map<String, Object> result = this.cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
             return result;
         } catch (Exception e) {
-            System.out.println("error:" + e.getMessage());
             return null;
+        }
+    }
+
+    @Override
+    public String handleUploadImg(MultipartFile file, String folder) {
+        try {
+            Map uploadParams = ObjectUtils.asMap(
+                    "folder", folder // Specifying the folder
+                    // You can add other parameters if needed, such as "public_id"
+            );
+
+            Map result = cloudinary.uploader().upload(file.getBytes(), uploadParams);
+            return result.get("url").toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

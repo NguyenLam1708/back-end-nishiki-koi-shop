@@ -7,6 +7,7 @@ import org.example.nishiki_koi_shop.model.entity.Tour;
 import org.example.nishiki_koi_shop.model.payload.TourForm;
 import org.example.nishiki_koi_shop.repository.FarmRepository;
 import org.example.nishiki_koi_shop.repository.TourRepository;
+import org.example.nishiki_koi_shop.service.CloudinaryService;
 import org.example.nishiki_koi_shop.service.TourService;
 import org.springframework.stereotype.Service;
 
@@ -19,20 +20,22 @@ import java.util.stream.Collectors;
 public class TourServiceImpl implements TourService {
     private final TourRepository tourRepository;
     private final FarmRepository farmRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     public TourDto createTour(TourForm tourForm) {
+        System.out.println("farm id:" + tourForm.getFarmId());
         Farm farm = farmRepository.findById(tourForm.getFarmId()).orElseThrow(() -> new IllegalArgumentException("ID nông trại không hợp lệ!"));
 
         Tour tour = Tour.builder()
-                .name(tourForm.getTourName())
-                .description(tourForm.getTourDescription())
-                .startDate(tourForm.getTourStartDate())
-                .endDate(tourForm.getTourEndDate())
-                .price(tourForm.getTourPrice())
+                .name(tourForm.getName())
+                .description(tourForm.getDescription())
+                .startDate(tourForm.getStartDate())
+                .endDate(tourForm.getEndDate())
+                .price(tourForm.getPrice())
                 .farm(farm)
-                .image(tourForm.getTourImage())
-                .maxParticipants(tourForm.getTourCapacity())
+                .image(cloudinaryService.handleUploadImg(tourForm.getImage(), "tour"))
+                .maxParticipants(tourForm.getCapacity())
                 .build();
         tour = tourRepository.save(tour);
         return TourDto.from(tour);
@@ -50,14 +53,21 @@ public class TourServiceImpl implements TourService {
 
         Farm farm = farmRepository.findById(tourForm.getFarmId()).orElseThrow(() -> new IllegalArgumentException("Khong tìm thây farm"));
 
-        tour.setName(tourForm.getTourName());
-        tour.setDescription(tourForm.getTourDescription());
-        tour.setStartDate(tourForm.getTourStartDate());
-        tour.setEndDate(tourForm.getTourEndDate());
-        tour.setPrice(tourForm.getTourPrice());
-        tour.setImage(tourForm.getTourImage());
+        tour.setName(tourForm.getName());
+        tour.setDescription(tourForm.getDescription());
+        tour.setStartDate(tourForm.getStartDate());
+        tour.setEndDate(tourForm.getEndDate());
+        tour.setPrice(tourForm.getPrice());
+
         tour.setCreatedDate(LocalDate.now());
         tour.setFarm(farm);
+
+        if (tourForm.getImage() != null) {
+            String publicID = cloudinaryService.getPublicIdFromImgUrl(tour.getImage(), "tour");
+            cloudinaryService.deleteImage(publicID);
+            String imgUrl = cloudinaryService.handleUploadImg(tourForm.getImage(), "tour");
+            tour.setImage(imgUrl);
+        }
 
         return TourDto.from(tourRepository.save(tour));
     }

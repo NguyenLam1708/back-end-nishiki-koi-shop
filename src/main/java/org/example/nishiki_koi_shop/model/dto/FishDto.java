@@ -9,19 +9,19 @@ import java.math.BigDecimal;
 @Data
 @Builder
 public class FishDto {
-    private Long fishId;
+    private Long id;
     private String name;
     private BigDecimal price;
     private String description;
-    private String image;
     private long size;
     private Integer quantity;
     private long fishTypeId ;
     private long farmId;
+    private String image;
 
     public static FishDto from(Fish fish) {
         return FishDto.builder()
-                .fishId(fish.getFishId())
+                .id(fish.getFishId())
                 .name(fish.getName())
                 .price(fish.getPrice())
                 .description(fish.getDescription())

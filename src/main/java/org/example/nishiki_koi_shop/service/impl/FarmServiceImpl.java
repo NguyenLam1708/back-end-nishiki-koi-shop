@@ -6,6 +6,7 @@ import org.example.nishiki_koi_shop.model.entity.Farm;
 import org.example.nishiki_koi_shop.model.payload.FarmForm;
 import org.example.nishiki_koi_shop.model.payload.FishForm;
 import org.example.nishiki_koi_shop.repository.FarmRepository;
+import org.example.nishiki_koi_shop.service.CloudinaryService;
 import org.example.nishiki_koi_shop.service.FarmService;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FarmServiceImpl implements FarmService {
     private final FarmRepository farmRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     public List<FarmDto> getAllFarm() {
@@ -35,7 +37,7 @@ public class FarmServiceImpl implements FarmService {
                 .name(farmForm.getName())
                 .description(farmForm.getDescription())
                 .location(farmForm.getLocation())
-                .image(farmForm.getImage())
+                .image(cloudinaryService.handleUploadImg(farmForm.getImage(), "farm"))
                 .contactInfo(farmForm.getContactInfo())
                 .createdDate(LocalDate.now())
                 .build();
@@ -56,10 +58,15 @@ public class FarmServiceImpl implements FarmService {
 
         farm.setName(farmForm.getName());
         farm.setDescription(farmForm.getDescription());
-        farm.setImage(farmForm.getImage());
         farm.setContactInfo(farmForm.getContactInfo());
         farm.setLocation(farmForm.getLocation());
-        farm.setCreatedDate(LocalDate.now());
+
+        if (farmForm.getImage() != null) {
+            String publicID=cloudinaryService.getPublicIdFromImgUrl(farm.getImage(),"farm");
+            cloudinaryService.deleteImage(publicID);
+            String imgUrl=cloudinaryService.handleUploadImg(farmForm.getImage(),"farm");
+            farm.setImage(imgUrl);
+        }
 
         farmRepository.save(farm);
 
