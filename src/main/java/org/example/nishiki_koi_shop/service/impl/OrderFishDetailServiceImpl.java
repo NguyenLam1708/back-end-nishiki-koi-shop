@@ -76,6 +76,14 @@ public class OrderFishDetailServiceImpl implements OrderFishDetailService {
     }
 
     @Override
+    public List<OrderFishDetailDto> getOrderFishDetailByOrderFishId(long orderFishId) {
+        OrderFish orderFish = orderFishRepository.findById(orderFishId).orElseThrow();
+        return orderFishDetailRepository.findAllByOrderFish(orderFish).stream()
+                .map(OrderFishDetailDto::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public OrderFishDetailDto getOrderFishDetailById(long id, Principal principal) {
         log.info("Fetching OrderFishDetail with ID: {} for user: {}", id, principal.getName());
 

@@ -11,6 +11,7 @@ public interface OrderTourDetailService {
     OrderTourDetailDto createOrderTourDetail(OrderTourDetailForm orderTourDetailForm);
     OrderTourDetailDto getOrderTourDetailById(long id, Principal principal);
     OrderTourDetailDto getOrderTourDetailById(long id);
+    List<OrderTourDetailDto> getOrderTourDetailByOrderTourId(long orderTourId);
     List<OrderTourDetailDto> getAllOrderTourDetails();
     OrderTourDetailDto updateOrderTourDetail(long id, OrderTourDetailForm orderTourDetailForm);
 }

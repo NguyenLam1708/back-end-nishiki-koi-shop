@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/order-tour-details")
@@ -28,4 +29,8 @@ public class OrderTourDetailController {
         return new ResponseEntity<>(orderTourDetail, HttpStatus.OK);
     }
 
+    @GetMapping("/order-tour/{id}")
+    public ResponseEntity<List<OrderTourDetailDto>> getOrderTourDetailsByOrderTourId(@PathVariable long id) {
+        return new ResponseEntity<>(orderTourDetailService.getOrderTourDetailByOrderTourId(id), HttpStatus.OK);
+    }
 }
