@@ -28,11 +28,15 @@ public class OrderFishController{
         return new ResponseEntity<>(orderFishService.createOrderFish(orderFishForm, principal), HttpStatus.CREATED);
     }
     @GetMapping("/history/user/{id}")
-    public ResponseEntity<List<OrderFishDto>> getOrderToursByUserId(@PathVariable long id, Principal principal) {
+    public ResponseEntity<List<OrderFishDto>> getOrderFishByUserId(@PathVariable long id, Principal principal) {
         return new ResponseEntity<>(orderFishService.getOrderFishByUserId(id, principal), HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<OrderFishDto> getOrderTourById(@PathVariable long id, Principal principal) {
+    public ResponseEntity<OrderFishDto> getOrderFishById(@PathVariable long id, Principal principal) {
         return new ResponseEntity<>(orderFishService.getOrderFishById(id, principal), HttpStatus.OK);
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<OrderFishDto> updateOrderFish(@PathVariable long id, @RequestBody OrderFishForm orderFishForm) {
+        return new ResponseEntity<>(orderFishService.updateOrderFish(id, orderFishForm), HttpStatus.OK);
     }
 }
