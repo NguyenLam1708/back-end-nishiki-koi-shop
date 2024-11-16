@@ -1,4 +1,4 @@
-INSERT INTO fish_type (name, description)
+INSERT INTO fish_types (name, description)
 VALUES
     ('KOHAKU', '“Đỏ và Trắng” là giống phổ biến nhất, với những họa tiết màu đỏ nổi bật trên nền trắng tạo nên một sự tương phản tuyệt đẹp. Sự kết hợp màu sắc đơn giản giữa đỏ và trắng mang lại một chiều sâu cảm nhận. Bị thu hút bởi màu sắc đỏ và trắng, những người yêu thích Koi thường nói rằng “Nuôi Koi bắt đầu và kết thúc với Kohaku.”'),
     ('AIGOROMO', 'Được gọi là Aigoromo (áo choàng chàm), ám chỉ Koromo có những đường vân màu xanh lam bên trong vảy đỏ. Aigoromo được phát triển bằng cách lai giống giữa Kohaku và loài gốc từng được gọi là Goshiki Asagi. Những đường vân được sắp xếp đều đặn, màu sắc sâu và đỏ đậm được đánh giá cao hơn.'),
@@ -84,13 +84,13 @@ VALUES
     (4, 950000, 4, 4),
     (5, 1500000, 5, 5);
 
-INSERT INTO order_fish (total_amount, status, order_date, delivery_date, payment_method, created_date, user_id)
+INSERT INTO order_fish (total_amount, status, delivery_date, payment_method, created_date, user_id)
 VALUES
-    (200000, 'PENDING', '2024-10-24', '2024-10-30', 'Credit Card', '2024-10-24', 1),
-    (150000, 'APPROVED', '2024-10-24', '2024-10-28', 'PayPal', '2024-10-24', 2),
-    (100000, 'CANCELLED', '2024-10-24', '2024-10-31', 'Bank Transfer', '2024-10-24', 3),
-    (250000, 'PENDING', '2024-10-24', '2024-10-29', 'Debit Card', '2024-10-24', 4),
-    (300000, 'APPROVED', '2024-10-24', '2024-11-01', 'Credit Card', '2024-10-24', 5);
+    (200000, 'PENDING', '2024-10-30', 'Credit Card', '2024-10-24', 1),
+    (150000, 'APPROVED', '2024-10-28', 'PayPal', '2024-10-24', 2),
+    (100000, 'CANCELLED', '2024-10-31', 'Bank Transfer', '2024-10-24', 3),
+    (250000, 'PENDING', '2024-10-29', 'Debit Card', '2024-10-24', 4),
+    (300000, 'APPROVED', '2024-11-01', 'Credit Card', '2024-10-24', 5);
 
 INSERT INTO order_fish_detail (quantity, price, order_fish_id, fish_id)
 VALUES
@@ -110,3 +110,14 @@ VALUES
     ('Một trải nghiệm thú vị và đáng nhớ! Cảm ơn các bạn!', '2024-10-28', 1, 2, NULL, 'EXCELLENT'),
     ('Cá rất đẹp, nhưng tour cần được cải thiện nhiều hơn.', '2024-10-29', 2, 1, 4, 'GOOD');
 
+INSERT INTO cart (user_id)
+VALUES (1);
+
+INSERT INTO carts_item (price, quantity, cart_id, fish_id)
+VALUES
+    (12000, 2, 1, 1),
+    (15000, 1, 1, 2),
+    (12000, 3, 1, 3),
+    (8000, 4, 1, 4),
+    (15000, 2, 1, 5),
+    (12000, 1, 1, 6);

@@ -162,6 +162,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(form.getPhoneNumber());
         user.setAddress(form.getAddress());
         user.setUsername(form.getUsername());
+        user.setEmail(form.getEmail());
 
         // Lưu lại thay đổi vào cơ sở dữ liệu
         userRepository.save(user);

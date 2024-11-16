@@ -87,6 +87,14 @@ public class OrderTourDetailServiceImpl implements OrderTourDetailService {
     }
 
     @Override
+    public List<OrderTourDetailDto> getOrderTourDetailByOrderTourId(long orderTourId) {
+        OrderTour orderTour = orderTourRepository.findById(orderTourId).orElseThrow();
+        return orderTourDetailRepository.findAllByOrderTour(orderTour).stream()
+                .map(OrderTourDetailDto::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<OrderTourDetailDto> getAllOrderTourDetails() {
         log.info("Fetching all OrderTourDetails");
 

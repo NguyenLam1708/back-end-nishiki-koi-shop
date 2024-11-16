@@ -34,4 +34,8 @@ public class OrderTourController {
         OrderTourDto orderTourDto = orderTourService.getOrderTourById(id, principal);
         return new ResponseEntity<>(orderTourDto, HttpStatus.OK);
     }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<OrderTourDto> updateOrderTour(@PathVariable long id, @RequestBody OrderTourForm orderTourForm) {
+        return new ResponseEntity<>(orderTourService.updateOrderTour(id, orderTourForm), HttpStatus.OK);
+    }
 }
