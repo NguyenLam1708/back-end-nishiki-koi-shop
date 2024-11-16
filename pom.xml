@@ -46,7 +46,11 @@
             <artifactId>java-jwt</artifactId>
             <version>4.0.0</version> <!-- Hoặc phiên bản mới nhất -->
         </dependency>
-
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.2</version>
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>

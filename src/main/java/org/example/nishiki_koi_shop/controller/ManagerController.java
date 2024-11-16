@@ -166,6 +166,7 @@ public class ManagerController {
     // Update
     @PutMapping(value = "/fish/update/{id}")
     public ResponseEntity<FishDto> updateFish(@PathVariable Long id, @ModelAttribute FishForm fishForm) {
+        System.out.println("fishform:" + fishForm);
         FishDto updatedFish = fishService.updateFish(id, fishForm);
         return ResponseEntity.ok(updatedFish);
     }
@@ -257,12 +258,12 @@ public class ManagerController {
     }
 
     @PostMapping("/fish-types/create")
-    public ResponseEntity<FishTypeDto> addFishType(@RequestBody FishTypeForm fishTypeForm) {
+    public ResponseEntity<FishTypeDto> addFishType(@ModelAttribute FishTypeForm fishTypeForm) {
         return ResponseEntity.ok(fishTypeService.createFishType(fishTypeForm));
     }
 
     @PutMapping("/fish-types/update/{id}")
-    public ResponseEntity<FishTypeDto> updateFishType(@PathVariable long id, @RequestBody FishTypeForm fishTypeForm) {
+    public ResponseEntity<FishTypeDto> updateFishType(@PathVariable long id, @ModelAttribute FishTypeForm fishTypeForm) {
         FishTypeDto updatedFishType = fishTypeService.updateFishType(id, fishTypeForm);
         return ResponseEntity.ok(updatedFishType);
     }

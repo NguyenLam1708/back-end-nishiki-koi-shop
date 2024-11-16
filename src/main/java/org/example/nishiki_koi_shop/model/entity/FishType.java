@@ -25,7 +25,11 @@ public class FishType {
     @OneToMany(mappedBy = "fishType")
     private List<Fish> fish;
 
+    @Column(updatable = false)
     private LocalDate createdDate;
 
-
+    @PrePersist
+    private void OnCreate() {
+        this.createdDate = LocalDate.now();
+    }
 }
