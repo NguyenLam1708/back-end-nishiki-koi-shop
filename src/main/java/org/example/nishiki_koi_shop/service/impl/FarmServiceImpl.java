@@ -61,10 +61,10 @@ public class FarmServiceImpl implements FarmService {
         farm.setContactInfo(farmForm.getContactInfo());
         farm.setLocation(farmForm.getLocation());
 
-        if (farmForm.getImage() != null) {
-            String publicID=cloudinaryService.getPublicIdFromImgUrl(farm.getImage(),"farm");
+        if (!farmForm.getImage().isEmpty()) {
+            String publicID = cloudinaryService.getPublicIdFromImgUrl(farm.getImage(), "farm");
             cloudinaryService.deleteImage(publicID);
-            String imgUrl=cloudinaryService.handleUploadImg(farmForm.getImage(),"farm");
+            String imgUrl = cloudinaryService.handleUploadImg(farmForm.getImage(), "farm");
             farm.setImage(imgUrl);
         }
 
@@ -77,6 +77,9 @@ public class FarmServiceImpl implements FarmService {
     public void deleteFarm(Long id) {
         Farm farm = farmRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("ID farm không tồn tại"));
+
+        String publicId = cloudinaryService.getPublicIdFromImgUrl(farm.getImage(), "farm");
+        cloudinaryService.deleteImage(publicId);
         farmRepository.delete(farm);
     }
 }

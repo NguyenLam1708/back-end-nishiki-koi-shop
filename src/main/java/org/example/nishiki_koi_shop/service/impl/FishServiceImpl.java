@@ -76,7 +76,8 @@ public class FishServiceImpl implements FishService {
         fish.setSize(fishForm.getSize());
         fish.setQuantity(fishForm.getQuantity());
 
-        if (fishForm.getImage() != null) {
+        System.out.println("fishForm:" + fishForm.getName());
+        if (!fishForm.getImage().isEmpty()) {
             String publicId = cloudinaryService.getPublicIdFromImgUrl(fish.getImage(), "fish");
             Map<String, Object> result = cloudinaryService.deleteImage(publicId);
             String imgUrl = cloudinaryService.handleUploadImg(fishForm.getImage(), "fish");

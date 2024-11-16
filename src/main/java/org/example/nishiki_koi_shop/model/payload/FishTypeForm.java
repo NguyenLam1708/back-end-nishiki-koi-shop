@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class FishTypeForm {
     private String name;
-    private String description;
+    private String description; 
 }

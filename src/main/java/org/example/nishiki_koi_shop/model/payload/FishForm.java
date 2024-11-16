@@ -1,5 +1,6 @@
 package org.example.nishiki_koi_shop.model.payload;
 
+import jakarta.validation.constraints.Null;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ public class FishForm {
     private String name;
     private BigDecimal price;
     private String description;
+
     private MultipartFile image;
     private long size;
     private Integer quantity;
