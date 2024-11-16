@@ -19,7 +19,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/order-fish-details")
+@RequestMapping("/api/v1/order-fish-details")
 @RequiredArgsConstructor
 public class OrderFishDetailController {
 
@@ -35,4 +35,8 @@ public class OrderFishDetailController {
         return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailById(id, principal), HttpStatus.OK);
     }
 
+    @GetMapping("/order-fish/{id}")
+    public ResponseEntity<List<OrderFishDetailDto>> getOrderFishDetailByOrderFishId(@PathVariable long id) {
+        return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailByOrderFishId(id), HttpStatus.OK);
+    }
 }
