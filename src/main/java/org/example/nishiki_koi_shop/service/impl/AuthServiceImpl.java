@@ -31,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final CartServiceImpl cartServiceImpl;
 
     @Override
     public AuthDto login(SignInForm form) {

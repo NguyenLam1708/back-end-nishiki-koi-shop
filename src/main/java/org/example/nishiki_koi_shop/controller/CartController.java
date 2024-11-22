@@ -15,7 +15,7 @@ public class CartController {
 
     // Tạo giỏ hàng mới
     @PostMapping
-    public ResponseEntity<CartDto> createCart(@RequestBody CartForm cartForm) {
+    public ResponseEntity<CartDto> createCart(@ModelAttribute CartForm cartForm) {
         CartDto cartDto = cartService.createCart(cartForm);
         return ResponseEntity.ok(cartDto);
     }

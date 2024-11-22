@@ -33,8 +33,11 @@ public class SecurityConfig {
             "/api/v1/auth/register",
             "/api/v1/auth/refresh",
             "/api/v1/fish",
+            "/api/v1/fish/**",
+            "/api/v1/farms/**",
             "/api/v1/farms/get-all-farm",
             "/api/v1/tours/get-all-tours",
+            "/api/v1/tours/**",
             "/api/v1/farms/filter/**",
             "/api/v1/fish/filter/**",
     };
