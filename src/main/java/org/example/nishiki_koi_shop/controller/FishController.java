@@ -29,8 +29,13 @@ public class FishController {
         return ResponseEntity.ok(fishList);
     }
 
-    @GetMapping("/filter/{id}")
-    public ResponseEntity<List<FishDto>> getAllFishByFilter(@PathVariable Long id) {
+    @GetMapping("/filter-by-type/{id}")
+    public ResponseEntity<List<FishDto>> getFishByFishType(@PathVariable Long id) {
         return new ResponseEntity<>(fishRepository.findByFishType(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/filter-by-farm/{id}")
+    public ResponseEntity<List<FishDto>> getFishByNyFarm(@PathVariable Long id) {
+        return new ResponseEntity<>(fishRepository.findByFarmId(id), HttpStatus.OK);
     }
 }

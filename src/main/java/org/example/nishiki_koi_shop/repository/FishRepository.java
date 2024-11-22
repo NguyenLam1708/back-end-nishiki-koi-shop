@@ -13,4 +13,7 @@ import java.util.List;
 public interface FishRepository extends JpaRepository<Fish, Long> {
     @Query("select f from Fish f where f.fishType.fishTypeId =:fishType order by f.fishId limit 3")
     List<FishDto> findByFishType(@Param("fishType") Long fishType);
+
+    @Query("select f from Fish f where f.farm.farmId =:farmId")
+    List<FishDto> findByFarmId(@Param("farmId") Long farmId);
 }

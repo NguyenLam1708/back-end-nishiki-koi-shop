@@ -2,6 +2,7 @@ package org.example.nishiki_koi_shop.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.nishiki_koi_shop.model.dto.TourDto;
+import org.example.nishiki_koi_shop.repository.TourRepository;
 import org.example.nishiki_koi_shop.service.TourService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TourController {
     private final TourService tourService;
+    private final TourRepository tourRepository;
+
     @GetMapping("/get-all-tours")
     public ResponseEntity<List<TourDto>> getAllTours() {
         return new ResponseEntity<>(tourService.getAllTour(), HttpStatus.OK);
     }
+
     @GetMapping("{id}")
     public ResponseEntity<TourDto> getTourById(@PathVariable("id") long id) {
         return new ResponseEntity<>(tourService.getTourById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/filter/{id}")
+    public ResponseEntity<List<TourDto>> filterTours(@PathVariable("id") long id) {
+        return new ResponseEntity<>(tourRepository.findTourByFarmId(id), HttpStatus.OK);
     }
 }
