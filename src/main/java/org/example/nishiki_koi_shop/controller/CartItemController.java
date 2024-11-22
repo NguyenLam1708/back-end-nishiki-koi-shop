@@ -13,21 +13,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cart/items")
-public class    CartItemController {
+public class CartItemController {
     @Autowired
     private CartItemService cartItemService;
 
     @PostMapping("/add")
-    public ResponseEntity<CartItemDto> addCartItem(@RequestBody CartItemForm cartItemForm, Principal principal) {
+    public ResponseEntity<CartItemDto> addCartItem(@ModelAttribute CartItemForm cartItemForm, Principal principal) {
         return new ResponseEntity<>(cartItemService.addCartItem(cartItemForm, principal), HttpStatus.CREATED);
     }
+
     @PostMapping("/remove")
-    public ResponseEntity<CartItemDto> removeCartItem(@RequestBody CartItemForm cartItemForm, Principal principal) {
+    public ResponseEntity<CartItemDto> removeCartItem(@ModelAttribute CartItemForm cartItemForm, Principal principal) {
         return new ResponseEntity<>(cartItemService.removeCartItem(cartItemForm, principal), HttpStatus.OK);
     }
-    @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteCartItem(Principal principal) {
-        cartItemService.deleteCartItem(principal);
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteCartItem(@PathVariable long id, Principal principal) {
+        cartItemService.deleteCartItem(id, principal);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
