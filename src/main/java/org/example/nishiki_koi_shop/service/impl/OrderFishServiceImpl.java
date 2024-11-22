@@ -65,10 +65,6 @@ public class OrderFishServiceImpl implements OrderFishService {
         OrderFish savedOrderFish = orderFishRepository.save(orderFish);
         log.info("Order created with ID: {}", savedOrderFish.getOrderFishId());
 
-        // Sau khi tạo đơn hàng thành công, xóa các mục trong giỏ hàng của người dùng
-        cartRepository.deleteByUserId(user.getId());
-        log.info("Cart cleared for user: {}", user.getUsername());
-
         return OrderFishDto.from(savedOrderFish);
     }
 
