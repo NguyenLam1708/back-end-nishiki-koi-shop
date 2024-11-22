@@ -57,6 +57,7 @@ public class CartItemServiceImpl implements CartItemService {
 
             // Tính toán số lượng mới và cập nhật
             int newQuantity = itemToUpdate.getQuantity() + cartItemForm.getQuantity();
+//            int newQuantity = cartItemForm.getQuantity();
             if (newQuantity > fish.getQuantity()) {
                 throw new RuntimeException("Số lượng yêu cầu vượt quá số lượng tồn kho của cá");
             }
@@ -113,7 +114,7 @@ public class CartItemServiceImpl implements CartItemService {
 
                 cartItemRepository.save(itemToUpdate);
                 return CartItemDto.fromCartItem(itemToUpdate);
-            }else {
+            } else {
                 throw new RuntimeException("Số lượng không hợp lệ");
             }
         } else {
@@ -123,17 +124,18 @@ public class CartItemServiceImpl implements CartItemService {
 
 
     @Override
-    public void deleteCartItem(Principal principal) {
+    public void deleteCartItem(long id, Principal principal) {
         User user = userRepository.findByEmail(principal.getName()).orElseThrow(() -> new RuntimeException("User not found"));
 
         Cart cart = cartRepository.findByUserId(user.getUserId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        CartItem cartItem = cartItemRepository.findByCartId(cart.getId())
+        CartItem cartItem = cartItemRepository.findCartItemByIdIs(id)
                 .orElseThrow(() -> new RuntimeException("CartItem not found"));
 
         cartItemRepository.delete(cartItem);
     }
+
     @Override
     public List<CartItemDto> getCartItems(Principal principal) {
         User user = userRepository.findByEmail(principal.getName()).orElseThrow(() -> new RuntimeException("User not found"));
