@@ -31,7 +31,7 @@ public class    CartItemController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<CartItemDto>> getCartItems(Principal principal) {
         List<CartItemDto> items = cartItemService.getCartItems(principal);
         return new ResponseEntity<>(items, HttpStatus.OK);
