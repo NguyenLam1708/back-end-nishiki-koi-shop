@@ -8,43 +8,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cart/items")
-public class CartItemController {
+public class    CartItemController {
     @Autowired
     private CartItemService cartItemService;
 
     @PostMapping("/add")
-    public ResponseEntity<CartItemDto> addCartItem(@RequestBody CartItemForm cartItemForm) {
-        CartItemDto addedItem = cartItemService.addCartItem(cartItemForm);
-        return new ResponseEntity<>(addedItem, HttpStatus.CREATED);
+    public ResponseEntity<CartItemDto> addCartItem(@RequestBody CartItemForm cartItemForm, Principal principal) {
+        return new ResponseEntity<>(cartItemService.addCartItem(cartItemForm, principal), HttpStatus.CREATED);
     }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<CartItemDto> updateCartItem(@PathVariable Long id, @RequestBody CartItemForm cartItemForm) {
-        CartItemDto cartItemDto = cartItemService.updateCartItem(id, cartItemForm);
-
-        return new ResponseEntity<>(cartItemDto, HttpStatus.OK);
+    @PostMapping("/remove")
+    public ResponseEntity<CartItemDto> removeCartItem(@RequestBody CartItemForm cartItemForm, Principal principal) {
+        return new ResponseEntity<>(cartItemService.removeCartItem(cartItemForm, principal), HttpStatus.OK);
     }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteCartItem(@PathVariable Long id) {
-        cartItemService.deleteCartItem(id);
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteCartItem(Principal principal) {
+        cartItemService.deleteCartItem(principal);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{cartId}")
-    public ResponseEntity<List<CartItemDto>> getCartItems(@PathVariable Long cartId) {
-        List<CartItemDto> items = cartItemService.getCartItems(cartId);
+    @GetMapping("")
+    public ResponseEntity<List<CartItemDto>> getCartItems(Principal principal) {
+        List<CartItemDto> items = cartItemService.getCartItems(principal);
         return new ResponseEntity<>(items, HttpStatus.OK);
-    }
-    // Xóa toàn bộ giỏ hàng
-    @DeleteMapping("/clear/{cartId}")
-    public ResponseEntity<Void> deleteAllCartItems(@PathVariable long cartId) {
-        cartItemService.deleteAllCartItems(cartId);
-        return ResponseEntity.noContent().build();
     }
 
 }

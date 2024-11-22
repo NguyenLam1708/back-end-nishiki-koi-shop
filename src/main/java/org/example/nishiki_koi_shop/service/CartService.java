@@ -6,14 +6,10 @@ import org.example.nishiki_koi_shop.model.payload.CartForm;
 import org.example.nishiki_koi_shop.model.payload.CartItemForm;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface CartService {
-    // Tạo giỏ hàng mới
-    CartDto createCart(CartForm cartForm);
-
     // Lấy thông tin giỏ hàng theo user ID
-    CartDto getCartByUserId(long userId);
-
-    void deleteCart( long cartId);
+    CartDto getCartByUserId(Principal principal);
 }

@@ -15,14 +15,4 @@ public class CartForm {
     private long userId;
     private List<CartItemForm> items;
 
-    public static CartForm fromCart(Cart cart) {
-        List<CartItemForm> itemForms = cart.getItems().stream()
-                .map(CartItemForm::fromCartItem)
-                .collect(Collectors.toList());
-
-        return CartForm.builder()
-                .userId(cart.getUser().getId())
-                .items(itemForms)
-                .build();
-    }
 }

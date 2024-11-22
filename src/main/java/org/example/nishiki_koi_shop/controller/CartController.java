@@ -7,30 +7,18 @@ import org.example.nishiki_koi_shop.service.CartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
 
-    // Tạo giỏ hàng mới
-    @PostMapping
-    public ResponseEntity<CartDto> createCart(@ModelAttribute CartForm cartForm) {
-        CartDto cartDto = cartService.createCart(cartForm);
-        return ResponseEntity.ok(cartDto);
-    }
-
     // Lấy thông tin giỏ hàng theo user ID
-    @GetMapping("/{userId}")
-    public ResponseEntity<CartDto> getCartByUserId(@PathVariable long userId) {
-        CartDto cartDto = cartService.getCartByUserId(userId);
+    @GetMapping()
+    public ResponseEntity<CartDto> getCartByUserId(Principal principal) {
+        CartDto cartDto = cartService.getCartByUserId(principal);
         return ResponseEntity.ok(cartDto);
     }
-
-    @DeleteMapping("/delete/{cartId}")
-    public ResponseEntity<Void> deleteCart(@PathVariable long cartId) {
-        cartService.deleteCart(cartId);
-        return ResponseEntity.noContent().build();
-    }
-
 }

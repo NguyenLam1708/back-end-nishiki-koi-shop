@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.example.nishiki_koi_shop.exception.InvalidRefreshTokenException;
 import org.example.nishiki_koi_shop.model.dto.AuthDto;
+import org.example.nishiki_koi_shop.model.entity.Cart;
 import org.example.nishiki_koi_shop.model.entity.Role;
 import org.example.nishiki_koi_shop.model.entity.User;
 import org.example.nishiki_koi_shop.model.payload.SignInForm;
 import org.example.nishiki_koi_shop.model.payload.SignUpForm;
+import org.example.nishiki_koi_shop.repository.CartRepository;
 import org.example.nishiki_koi_shop.repository.RoleRepository;
 import org.example.nishiki_koi_shop.repository.UserRepository;
 import org.example.nishiki_koi_shop.security.JwtTokenProvider;
@@ -32,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final CartServiceImpl cartServiceImpl;
+    private final CartRepository cartRepository;
 
     @Override
     public AuthDto login(SignInForm form) {
@@ -66,9 +69,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String register(SignUpForm form) {
-        if (userRepository.existsByUsername(form.getUsername())) {
-            throw new IllegalArgumentException("Username is already in use");
-        }
+
         if (userRepository.existsByEmail(form.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
@@ -85,8 +86,15 @@ public class AuthServiceImpl implements AuthService {
                 .role(role)
                 .createdDate(LocalDate.now())
                 .build();
-
         userRepository.save(user);
+
+        Cart cart = Cart.builder()
+                .user(user)
+                .createdDate(LocalDate.now())
+                .build();
+
+        cartRepository.save(cart);
+
         log.info("User {} registered", user.getUsername());
         return "Success register new user";
     }

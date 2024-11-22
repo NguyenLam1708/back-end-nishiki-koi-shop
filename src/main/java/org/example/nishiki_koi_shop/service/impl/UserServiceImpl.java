@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .filter(user -> user.getDeletedAt() == null) // Lọc người dùng chưa bị xóa
+                .filter(user -> user.getRole().getName().equals("ROLE_MANAGER")) // Lọc người dùng chưa bị xóa
                 .map(UserDto::from)
                 .collect(Collectors.toList());
     }
