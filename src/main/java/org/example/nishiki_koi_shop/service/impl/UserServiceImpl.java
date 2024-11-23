@@ -112,11 +112,18 @@ public class UserServiceImpl implements UserService {
         return UserDto.from(user);
     }
 
+    @Override
+    public List<UserDto> getAll() {
+        return userRepository.findAll().stream()
+                .filter(user -> !user.getRole().getName().equals("ROLE_MANAGER")) // Lọc người dùng chưa bị xóa
+                .map(UserDto::from)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .filter(user -> user.getRole().getName().equals("ROLE_MANAGER")) // Lọc người dùng chưa bị xóa
+                .filter(user -> user.getRole().getName().equals("ROLE_USER")) // Lọc người dùng chưa bị xóa
                 .map(UserDto::from)
                 .collect(Collectors.toList());
     }

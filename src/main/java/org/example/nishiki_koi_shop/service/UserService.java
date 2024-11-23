@@ -16,6 +16,8 @@ public interface UserService {
 
     UserDto getUserById(long id);
 
+    List<UserDto> getAll();
+
     List<UserDto> getAllUsers();
 
     UserDto updateUser(Long id, UserForm form);
