@@ -87,46 +87,46 @@ public class DataInitializer {
                 cartRepository.save(cart);
             }
 
-            if (userRepository.findByEmail("saledelivery@example.com").isEmpty()) {
-                Role saleDeliveryRole = roleRepository.findByName("ROLE_SALE_DELIVERY")
-                        .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_SALE_DELIVERY").build()));
+            if (userRepository.findByEmail("deliverystaff@example.com").isEmpty()) {
+                Role deliveryStaffRole = roleRepository.findByName("ROLE_DELIVERY_STAFF")
+                        .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_DELIVERY_STAFF").build()));
 
-                User saleDelivery = User.builder()
-                        .username("saleDelivery")
-                        .email("saledelivery@example.com")
+                User deliveryStaff = User.builder()
+                        .username("deliveryStaff")
+                        .email("deliverytaff@example.com")
                         .password(passwordEncoder.encode("123456"))
-                        .fullName("Sale Delivery User")
-                        .role(saleDeliveryRole)
+                        .fullName("Delivery Staff User")
+                        .role(deliveryStaffRole)
                         .createdDate(LocalDate.now())
                         .address("42/1")
                         .phoneNumber("0362651806")
                         .build();
 
-                userRepository.save(saleDelivery);
+                userRepository.save(deliveryStaff);
                 Cart cart = Cart.builder()
-                        .user(saleDelivery)
+                        .user(deliveryStaff)
                         .createdDate(LocalDate.now())
                         .build();
                 cartRepository.save(cart);
             }
-            if (userRepository.findByEmail("saleconsult@example.com").isEmpty()) {
-                Role saleConsultRole = roleRepository.findByName("ROLE_SALE_CONSULT")
-                        .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_SALE_CONSULT").build()));
+            if (userRepository.findByEmail("consultstaff@example.com").isEmpty()) {
+                Role consultStaffRole = roleRepository.findByName("ROLE_CONSULT_STAFF")
+                        .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_CONSULT_STAFF").build()));
 
-                User saleConsult = User.builder()
+                User consultStaff = User.builder()
                         .username("saleConsult")
-                        .email("saleconsult@example.com")
+                        .email("consultstaff@example.com")
                         .password(passwordEncoder.encode("123456"))
-                        .fullName("Sale Consult User")
-                        .role(saleConsultRole)
+                        .fullName("Consult Staff User")
+                        .role(consultStaffRole)
                         .createdDate(LocalDate.now())
                         .address("42/1")
                         .phoneNumber("0362651806")
                         .build();
 
-                userRepository.save(saleConsult);
+                userRepository.save(consultStaff);
                 Cart cart = Cart.builder()
-                        .user(saleConsult)
+                        .user(consultStaff)
                         .createdDate(LocalDate.now())
                         .build();
                 cartRepository.save(cart);
