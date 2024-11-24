@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.example.nishiki_koi_shop.model.dto.*;
 import org.example.nishiki_koi_shop.model.payload.OrderFishForm;
 import org.example.nishiki_koi_shop.model.payload.OrderTourForm;
+import org.example.nishiki_koi_shop.model.payload.UserForm;
 import org.example.nishiki_koi_shop.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.security.Principal;
 import java.util.List;
 
     @RestController
@@ -28,6 +30,28 @@ import java.util.List;
         @GetMapping("/users/{id}")
         public ResponseEntity<UserDto> getUserById(@PathVariable("id") long id) {
             return ResponseEntity.ok(userService.getUserById(id));
+        }
+
+        @GetMapping("/users")
+        public ResponseEntity<List<UserDto>> getAll() {
+            return ResponseEntity.ok(userService.getAll());
+        }
+
+        @DeleteMapping("users/soft-delete/{id}")
+        public ResponseEntity<String> softDeleteUser(@PathVariable("id") Long userId, Principal principal) {
+            userService.softDeleteUser(userId, principal);
+            return ResponseEntity.ok("Người dùng đã được xóa mềm thành công");
+        }
+
+        @PutMapping("users/restore/{id}")
+        public ResponseEntity<String> restoreUser(@PathVariable("id") Long id) {
+            userService.restoreUser(id);
+            return ResponseEntity.ok("User restored successfully");
+        }
+
+        @PutMapping("users/update/{id}")
+        public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserForm form) {
+            return ResponseEntity.ok(userService.updateUser(id, form));
         }
 
         // Quản lý order tour
