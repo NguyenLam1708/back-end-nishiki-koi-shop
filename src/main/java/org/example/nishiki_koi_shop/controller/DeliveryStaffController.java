@@ -16,8 +16,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/delivery") // API dành cho nhân viên giao hàng
-public class StaffDeliveryController {
+@RequestMapping("/api/v1/delivery-staff") // API dành cho nhân viên giao hàng
+public class DeliveryStaffController {
 
     private final UserService userService; // Dịch vụ quản lý thông tin người dùng
     private final OrderTourService orderTourService; // Dịch vụ quản lý đơn đặt tour
