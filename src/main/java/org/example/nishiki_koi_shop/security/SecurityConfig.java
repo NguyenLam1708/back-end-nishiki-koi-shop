@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers("/api/v1/manager/**").hasAuthority("ROLE_MANAGER")
                         .requestMatchers("/api/v1/sales-staff/**").hasAuthority("ROLE_SALE_STAFF")
-                        .requestMatchers("/api/v1/staff-delivery/**").hasAuthority("ROLE_DELIVERY_STAFF")
+                        .requestMatchers("/api/v1/delivery-staff/**").hasAuthority("ROLE_DELIVERY_STAFF")
                         .requestMatchers("/api/v1/consult-staff/**").hasAuthority("ROLE_CONSULT_STAFF")
                         .anyRequest().authenticated()
                 )
