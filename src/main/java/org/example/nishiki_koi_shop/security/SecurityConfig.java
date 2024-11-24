@@ -25,38 +25,30 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // Bộ lọc xác thực JWT để xử lý token trong request
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    // Service lấy thông tin user từ database
     private final UserDetailsServiceImpl userDetailsService;
 
-    // Các endpoint không yêu cầu xác thực
     private final String[] PUBLIC_ENDPOINTS = {
-            "/api/v1/auth/**", // Các API liên quan đến xác thực
-            "/api/v1/fish/**", // Các API liên quan đến thông tin cá
-            "/api/v1/farms/**", // Các API liên quan đến thông tin trang trại
-            "/api/v1/tours/**", // Các API liên quan đến thông tin tour
+            "/api/v1/auth/**",
+            "/api/v1/fish/**",
+            "/api/v1/farms/**",
+            "/api/v1/tours/**",
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // Tắt CSRF
-                .authorizeHttpRequests(authorize -> authorize
-                        // Quyền public
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/fish/**").permitAll()
-
-                        // Các quyền phân cấp
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers("/api/v1/manager/**").hasAuthority("ROLE_MANAGER")
                         .requestMatchers("/api/v1/sale-staff/**").hasAuthority("ROLE_SALE_STAFF")
                         .requestMatchers("/api/v1/staff-delivery/**").hasAuthority("ROLE_STAFF_DELIVERY")
                         .requestMatchers("/api/v1/staff-consult/**").hasAuthority("ROLE_STAFF_CONSULT")
-
-                        // Các quyền khác
                         .anyRequest().authenticated()
                 )
+                .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -64,16 +56,15 @@ public class SecurityConfig {
 
         return http.build();
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        // Cấu hình CORS cho phép các yêu cầu từ frontend
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000"); // Chỉ định nguồn (origin) được phép truy cập
-        configuration.addAllowedMethod("*"); // Cho phép tất cả các phương thức HTTP (GET, POST, PUT, DELETE,...)
-        configuration.addAllowedHeader("*"); // Cho phép tất cả các header
-        configuration.setAllowCredentials(true); // Hỗ trợ cookies hoặc headers chứa thông tin xác thực
+        configuration.addAllowedOrigin("http://localhost:3000"); // Thay đổi nếu cần
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true); // Nếu cần hỗ trợ cookies hoặc authorization headers
 
-        // Đăng ký cấu hình CORS cho tất cả các đường dẫn
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -81,13 +72,11 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Mã hóa mật khẩu sử dụng thuật toán BCrypt
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        // Cung cấp AuthenticationManager để xử lý xác thực
         return configuration.getAuthenticationManager();
     }
 
