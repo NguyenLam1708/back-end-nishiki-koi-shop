@@ -16,11 +16,17 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "role_id")
     private Long roleId;
 
-    @Column( unique = true)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "role")
     private List<User> users;
+
+    // Thêm phương thức getRoleName
+    public String getRoleName() {
+        return this.name;
+    }
 }

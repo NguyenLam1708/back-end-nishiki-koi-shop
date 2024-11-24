@@ -94,11 +94,11 @@ VALUES
 
 INSERT INTO order_fish_detail (quantity, price, order_fish_id, fish_id)
 VALUES
-    (2, 24000, 1, 1),
-    (3, 45000, 2, 2),
-    (1, 12000, 3, 3),
-    (4, 32000, 4, 4),
-    (5, 75000, 5, 5);
+    (2, 24000, 11, 20),
+    (3, 45000, 12, 21),
+    (1, 12000, 13, 22),
+    (4, 32000, 14, 23),
+    (5, 75000, 15, 25);
 
 INSERT INTO feedbacks (comment, created_date, user_id, tour_id, fish_id, rating)
 VALUES
