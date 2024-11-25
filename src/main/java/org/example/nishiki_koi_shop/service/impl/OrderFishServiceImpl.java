@@ -1,22 +1,19 @@
-package org.example.nishiki_koi_shop.service.impl;
+    package org.example.nishiki_koi_shop.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.nishiki_koi_shop.model.dto.CartItemDto;
 import org.example.nishiki_koi_shop.model.dto.OrderFishDto;
 import org.example.nishiki_koi_shop.model.dto.OrderTourDto;
-import org.example.nishiki_koi_shop.model.entity.Cart;
-import org.example.nishiki_koi_shop.model.entity.OrderFish;
-import org.example.nishiki_koi_shop.model.entity.OrderTour;
-import org.example.nishiki_koi_shop.model.entity.User;
+import org.example.nishiki_koi_shop.model.entity.*;
 import org.example.nishiki_koi_shop.model.payload.OrderFishForm;
-import org.example.nishiki_koi_shop.repository.CartRepository;
-import org.example.nishiki_koi_shop.repository.OrderFishRepository;
-import org.example.nishiki_koi_shop.repository.UserRepository;
+import org.example.nishiki_koi_shop.repository.*;
 import org.example.nishiki_koi_shop.service.OrderFishService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +28,8 @@ public class OrderFishServiceImpl implements OrderFishService {
     private final OrderFishRepository orderFishRepository;
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
+    private final OrderFishDetailRepository orderFishDetailRepository;
 
     @Override
     @Transactional
@@ -41,31 +40,53 @@ public class OrderFishServiceImpl implements OrderFishService {
 
         log.info("Creating order for user: {}", user.getUsername());
 
-        // Kiểm tra xem người dùng có giỏ hàng và có sản phẩm trong giỏ hàng hay không
         Cart cart = cartRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new RuntimeException("No cart found for user"));
 
-        // Kiểm tra nếu giỏ hàng không có sản phẩm
-        if (cart.getItems().isEmpty()) {
+        // Lấy danh sách các CartItem từ repository
+        List<CartItem> cartItems = cartItemRepository.findByCartId(cart.getId());
+
+        if (cartItems.isEmpty()) {
             log.warn("User {} has no items in the cart", user.getUsername());
             throw new RuntimeException("Your cart is empty. Please add items to your cart before placing an order.");
         }
 
+        BigDecimal totalAmount = cartItems.stream()
+                .map(item -> item.getFish().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         // Tạo đơn hàng (OrderFish)
         OrderFish orderFish = OrderFish.builder()
                 .user(user)
-                .totalAmount(orderFishForm.getTotalAmount())
+                .totalAmount(totalAmount)
                 .deliveryDate(orderFishForm.getDeliveryDate())
                 .paymentMethod(orderFishForm.getPaymentMethod())
+                .shippingAddress(orderFishForm.getShippingAddress())
                 .createdDate(LocalDate.now())
                 .status(OrderFish.Status.PENDING) // Trạng thái mặc định
                 .build();
 
         // Lưu đơn hàng vào cơ sở dữ liệu
-        OrderFish savedOrderFish = orderFishRepository.save(orderFish);
-        log.info("Order created with ID: {}", savedOrderFish.getOrderFishId());
+        orderFishRepository.save(orderFish);
 
-        return OrderFishDto.from(savedOrderFish);
+        log.info("Order created with ID: {}", orderFish.getOrderFishId());
+
+        // Tạo danh sách các OrderFishDetail từ CartItem
+        List<OrderFishDetail> orderFishDetails = cartItems.stream()
+                .map(cartItem -> OrderFishDetail.builder()
+                        .fish(cartItem.getFish()) // Lấy đối tượng Fish từ CartItem
+                        .orderFish(orderFish)    // Liên kết với OrderFish
+                        .quantity(cartItem.getQuantity()) // Lấy số lượng từ CartItem
+                        .price(cartItem.getFish().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())))
+                        .build())
+                .collect(Collectors.toList());
+
+        // Lưu từng OrderFishDetail vào cơ sở dữ liệu
+        orderFishDetailRepository.saveAll(orderFishDetails);
+
+        log.info("Order details created for order ID: {}", orderFish.getOrderFishId());
+
+        return OrderFishDto.from(orderFish);
     }
 
     @Override

@@ -25,16 +25,6 @@ public class OrderFishDetailController {
 
     private final OrderFishDetailService orderFishDetailService;
 
-    @PostMapping("/create")
-    public ResponseEntity<OrderFishDetailDto> createOrderFishDetail(@RequestBody OrderFishDetailForm orderFishDetailForm) {
-        return new ResponseEntity<>(orderFishDetailService.createOrderFishDetail(orderFishDetailForm), HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderFishDetailDto> getOrderFishDetailById(@PathVariable long id, Principal principal) {
-        return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailById(id, principal), HttpStatus.OK);
-    }
-
     @GetMapping("/order-fish/{id}")
     public ResponseEntity<List<OrderFishDetailDto>> getOrderFishDetailByOrderFishId(@PathVariable long id) {
         return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailByOrderFishId(id), HttpStatus.OK);

@@ -20,11 +20,12 @@ public class OrderFish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orderFishId;
 
-    private long totalAmount;
+    private BigDecimal totalAmount;
     @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDate deliveryDate;
     private String paymentMethod;
+    private String shippingAddress;
     private LocalDate createdDate;
 
     public enum Status {
@@ -35,6 +36,6 @@ public class OrderFish {
     @JoinColumn(name = "user_id", nullable = false) // Cột tham chiếu tới bảng User
     private User user;
 
-    @OneToOne(mappedBy = "orderFish", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Quan hệ với OrderFishDetail
-    private OrderFishDetail orderFishDetail;
+    @OneToMany(mappedBy = "orderFish", cascade = CascadeType.ALL) // Quan hệ với OrderFishDetail
+    private List<OrderFishDetail> orderFishDetail;
 }

@@ -31,7 +31,7 @@ public class OrderTour {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(mappedBy = "orderTour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "orderTour", cascade = CascadeType.ALL)
     private OrderTourDetail orderTourDetail;
 
     public enum Status {

@@ -22,6 +22,7 @@ import java.util.List;
         private final UserService userService;
         private final OrderTourService orderTourService;
         private final OrderFishService orderFishService;
+        private final OrderFishDetailService orderFishDetailService;
         private final FishService fishService;
         private final FarmService farmService;
         private final TourService tourService;
@@ -86,7 +87,11 @@ import java.util.List;
         public ResponseEntity<OrderFishDto> updateOrderFish(@PathVariable long id, @RequestBody OrderFishForm orderFishForm) {
             return new ResponseEntity<>(orderFishService.updateOrderFish(id, orderFishForm), HttpStatus.OK);
         }
-
+        //OrderFishDetail
+        @GetMapping("/order-fish-details/order-fish/{id}")
+        public ResponseEntity<List<OrderFishDetailDto>> getOrderFishDetailByOrderFishId(@PathVariable long id) {
+            return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailByOrderFishId(id), HttpStatus.OK);
+        }
         //Quản lý fish
         @GetMapping("/fish")
         public ResponseEntity<List<FishDto>> getAllFish() {

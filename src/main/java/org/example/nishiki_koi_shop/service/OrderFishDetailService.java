@@ -7,10 +7,5 @@ import java.security.Principal;
 import java.util.List;
 
 public interface OrderFishDetailService {
-    OrderFishDetailDto createOrderFishDetail(OrderFishDetailForm orderFishDetailForm);
-    OrderFishDetailDto getOrderFishDetailById(long id, Principal principal);
-    OrderFishDetailDto getOrderFishDetailById(long id);
     List<OrderFishDetailDto> getOrderFishDetailByOrderFishId(long orderFishId);
-    List<OrderFishDetailDto> getAllOrderFishDetails();
-    OrderFishDetailDto updateOrderFishDetail(long id, OrderFishDetailForm orderFishDetailForm);
 }
