@@ -27,16 +27,16 @@ import java.util.List;
         private final TourService tourService;
 
         // Quan ly user
+        @GetMapping("/users")
+        public ResponseEntity<List<UserDto>> getAllUsers() {
+            return ResponseEntity.ok(userService.getAllUsers());
+        }
+
+        // Xem thông tin chi tiết của một khách hàng
         @GetMapping("/users/{id}")
         public ResponseEntity<UserDto> getUserById(@PathVariable("id") long id) {
             return ResponseEntity.ok(userService.getUserById(id));
         }
-
-        @GetMapping("/users")
-        public ResponseEntity<List<UserDto>> getAll() {
-            return ResponseEntity.ok(userService.getAll());
-        }
-
         @DeleteMapping("users/soft-delete/{id}")
         public ResponseEntity<String> softDeleteUser(@PathVariable("id") Long userId, Principal principal) {
             userService.softDeleteUser(userId, principal);

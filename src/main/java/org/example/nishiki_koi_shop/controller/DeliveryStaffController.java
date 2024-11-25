@@ -64,9 +64,13 @@ public class DeliveryStaffController {
     public ResponseEntity<OrderFishDto> updateOrderFish(@PathVariable long id, @RequestBody OrderFishForm orderFishForm) {
         return new ResponseEntity<>(orderFishService.updateOrderFish(id, orderFishForm), HttpStatus.OK);
     }
+    //Nguười dùng
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
 
-    // Xem thông tin người dùng (chỉ đọc)
-    // Xem chi tiết thông tin của một người dùng dựa trên ID
+    // Xem thông tin chi tiết của một khách hàng
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") long id) {
         return ResponseEntity.ok(userService.getUserById(id));
