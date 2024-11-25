@@ -30,6 +30,7 @@ public class OrderFishServiceImpl implements OrderFishService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderFishDetailRepository orderFishDetailRepository;
+    private final FishRepository fishRepository;
 
     @Override
     @Transactional
@@ -73,12 +74,27 @@ public class OrderFishServiceImpl implements OrderFishService {
 
         // Tạo danh sách các OrderFishDetail từ CartItem
         List<OrderFishDetail> orderFishDetails = cartItems.stream()
-                .map(cartItem -> OrderFishDetail.builder()
-                        .fish(cartItem.getFish()) // Lấy đối tượng Fish từ CartItem
-                        .orderFish(orderFish)    // Liên kết với OrderFish
-                        .quantity(cartItem.getQuantity()) // Lấy số lượng từ CartItem
-                        .price(cartItem.getFish().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())))
-                        .build())
+                .map(cartItem -> {
+                    // Trước khi tạo OrderFishDetail, kiểm tra và cập nhật số lượng cá trong kho
+                    Fish fish = cartItem.getFish();
+                    int quantity = fish.getQuantity();
+
+                    // Kiểm tra số lượng trong kho có đủ không
+                    if (quantity < cartItem.getQuantity()) {
+                        throw new RuntimeException("Not enough stock for fish: " + fish.getFishId());
+                    }
+
+                    // Cập nhật số lượng cá trong kho sau khi đặt hàng
+                    fish.setQuantity(quantity - cartItem.getQuantity());
+                    fishRepository.save(fish);
+
+                    return OrderFishDetail.builder()
+                            .fish(fish) // Lấy đối tượng Fish từ CartItem
+                            .orderFish(orderFish)    // Liên kết với OrderFish
+                            .quantity(cartItem.getQuantity()) // Lấy số lượng từ CartItem
+                            .price(fish.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())))
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         // Lưu từng OrderFishDetail vào cơ sở dữ liệu
@@ -88,6 +104,7 @@ public class OrderFishServiceImpl implements OrderFishService {
 
         return OrderFishDto.from(orderFish);
     }
+
 
     @Override
     public OrderFishDto getOrderFishById(long id, Principal principal) {

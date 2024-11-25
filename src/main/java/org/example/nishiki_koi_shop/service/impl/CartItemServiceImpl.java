@@ -44,6 +44,11 @@ public class CartItemServiceImpl implements CartItemService {
         Fish fish = fishRepository.findById(cartItemForm.getFishId())
                 .orElseThrow(() -> new RuntimeException("Cá không tồn tại"));
 
+        // Kiểm tra số lượng tồn kho
+        if (cartItemForm.getQuantity() > fish.getQuantity()) {
+            throw new RuntimeException("Số lượng yêu cầu vượt quá số lượng tồn kho của cá");
+        }
+
         // Kiểm tra xem cá đã có trong giỏ hàng chưa
         Optional<CartItem> existingItem = cart.getItems().stream()
                 .filter(item -> item.getFish().getFishId() == fish.getFishId())
@@ -57,10 +62,12 @@ public class CartItemServiceImpl implements CartItemService {
 
             // Tính toán số lượng mới và cập nhật
             int newQuantity = itemToUpdate.getQuantity() + cartItemForm.getQuantity();
-//            int newQuantity = cartItemForm.getQuantity();
+
+            // Kiểm tra số lượng mới có vượt quá tồn kho không
             if (newQuantity > fish.getQuantity()) {
                 throw new RuntimeException("Số lượng yêu cầu vượt quá số lượng tồn kho của cá");
             }
+
             itemToUpdate.setQuantity(newQuantity);
 
             // Cập nhật giá mới dựa trên số lượng mới
@@ -69,18 +76,25 @@ public class CartItemServiceImpl implements CartItemService {
             cartItemRepository.save(itemToUpdate);
             return CartItemDto.fromCartItem(itemToUpdate); // Trả về item đã cập nhật
         } else {
-            // Nếu chưa có, tạo mới CartItem
+            // Nếu chưa có, tạo mới CartItem và kiểm tra số lượng trước khi thêm
             newItem = CartItem.builder()
                     .fish(fish)
                     .quantity(cartItemForm.getQuantity())
                     .price(fish.getPrice().multiply(BigDecimal.valueOf(cartItemForm.getQuantity()))) // Tính giá dựa trên số lượng
                     .cart(cart)
                     .build();
+
+            // Kiểm tra số lượng tồn kho trước khi thêm vào giỏ hàng
+            if (newItem.getQuantity() > fish.getQuantity()) {
+                throw new RuntimeException("Số lượng yêu cầu vượt quá số lượng tồn kho của cá");
+            }
+
             cartItemRepository.save(newItem);
         }
 
         return CartItemDto.fromCartItem(newItem);
     }
+
 
     @Override
     public CartItemDto removeCartItem(CartItemForm cartItemForm, Principal principal) {
