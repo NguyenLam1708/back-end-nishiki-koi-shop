@@ -156,6 +156,7 @@ public class OrderFishServiceImpl implements OrderFishService {
 
         orderFish.setDeliveryDate(orderFishForm.getDeliveryDate());
         orderFish.setPaymentMethod(orderFishForm.getPaymentMethod());
+        orderFish.setStatus(orderFishForm.getStatus());
 
         OrderFish updatedOrderFish = orderFishRepository.save(orderFish);
         log.info("Order updated with ID: {}", updatedOrderFish.getOrderFishId());

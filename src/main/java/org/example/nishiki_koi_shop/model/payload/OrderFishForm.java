@@ -13,4 +13,5 @@ public class OrderFishForm {
     private String paymentMethod;
     private List<Long> cartItemIds;
     private String shippingAddress;
+    private OrderFish.Status status;
 }
