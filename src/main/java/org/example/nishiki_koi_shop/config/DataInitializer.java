@@ -39,12 +39,11 @@ public class DataInitializer {
                 cartRepository.save(cart);
             }
 
-            User admin = null;
             if (userRepository.findByEmail("manager@example.com").isEmpty()) {
                 Role managerRole = roleRepository.findByName("ROLE_MANAGER")
                         .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_MANAGER").build()));
 
-                admin = User.builder()
+                User admin = User.builder()
                         .username("manager")
                         .email("manager@example.com")
                         .password(passwordEncoder.encode("123456"))
@@ -93,7 +92,7 @@ public class DataInitializer {
 
                 User deliveryStaff = User.builder()
                         .username("deliveryStaff")
-                        .email("deliverytaff@example.com")
+                        .email("deliverystaff@example.com")
                         .password(passwordEncoder.encode("123456"))
                         .fullName("Delivery Staff User")
                         .role(deliveryStaffRole)
@@ -131,12 +130,6 @@ public class DataInitializer {
                         .build();
                 cartRepository.save(cart);
             }
-
-
-
-
-
-
         };
     }
 }
