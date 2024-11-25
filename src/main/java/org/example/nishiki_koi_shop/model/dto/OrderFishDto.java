@@ -27,6 +27,7 @@ public class OrderFishDto {
                 .status(orderFish.getStatus())
                 .deliveryDate(orderFish.getDeliveryDate())
                 .paymentMethod(orderFish.getPaymentMethod())
+                .shippingAddress(orderFish.getShippingAddress())
                 .createdDate(orderFish.getCreatedDate())
                 .build();
     }

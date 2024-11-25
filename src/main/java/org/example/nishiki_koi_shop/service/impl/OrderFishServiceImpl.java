@@ -45,14 +45,15 @@ public class OrderFishServiceImpl implements OrderFishService {
                 .orElseThrow(() -> new RuntimeException("No cart found for user"));
 
         // Lấy danh sách các CartItem từ repository
-        List<CartItem> cartItems = cartItemRepository.findByCartId(cart.getId());
+        // Lấy danh sách các CartItem từ repository theo danh sách ID được chọn
+        List<CartItem> selectedCartItems = cartItemRepository.findAllById(orderFishForm.getCartItemIds());
 
-        if (cartItems.isEmpty()) {
-            log.warn("User {} has no items in the cart", user.getUsername());
-            throw new RuntimeException("Your cart is empty. Please add items to your cart before placing an order.");
+        if (selectedCartItems.isEmpty()) {
+            log.warn("No items selected for checkout by user {}", user.getUsername());
+            throw new RuntimeException("No items selected for checkout. Please select items and try again.");
         }
 
-        BigDecimal totalAmount = cartItems.stream()
+        BigDecimal totalAmount = selectedCartItems.stream()
                 .map(item -> item.getFish().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -73,29 +74,27 @@ public class OrderFishServiceImpl implements OrderFishService {
         log.info("Order created with ID: {}", orderFish.getOrderFishId());
 
         // Tạo danh sách các OrderFishDetail từ CartItem
-        List<OrderFishDetail> orderFishDetails = cartItems.stream()
+        List<OrderFishDetail> orderFishDetails = selectedCartItems.stream()
                 .map(cartItem -> {
-                    // Trước khi tạo OrderFishDetail, kiểm tra và cập nhật số lượng cá trong kho
                     Fish fish = cartItem.getFish();
                     int quantity = fish.getQuantity();
 
-                    // Kiểm tra số lượng trong kho có đủ không
                     if (quantity < cartItem.getQuantity()) {
                         throw new RuntimeException("Not enough stock for fish: " + fish.getFishId());
                     }
 
-                    // Cập nhật số lượng cá trong kho sau khi đặt hàng
                     fish.setQuantity(quantity - cartItem.getQuantity());
                     fishRepository.save(fish);
 
                     return OrderFishDetail.builder()
-                            .fish(fish) // Lấy đối tượng Fish từ CartItem
-                            .orderFish(orderFish)    // Liên kết với OrderFish
-                            .quantity(cartItem.getQuantity()) // Lấy số lượng từ CartItem
+                            .fish(fish)
+                            .orderFish(orderFish)
+                            .quantity(cartItem.getQuantity())
                             .price(fish.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())))
                             .build();
                 })
                 .collect(Collectors.toList());
+
 
         // Lưu từng OrderFishDetail vào cơ sở dữ liệu
         orderFishDetailRepository.saveAll(orderFishDetails);
@@ -155,10 +154,8 @@ public class OrderFishServiceImpl implements OrderFishService {
         OrderFish orderFish = orderFishRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrderFish not found"));
 
-        orderFish.setTotalAmount(orderFishForm.getTotalAmount());
         orderFish.setDeliveryDate(orderFishForm.getDeliveryDate());
         orderFish.setPaymentMethod(orderFishForm.getPaymentMethod());
-        orderFish.setStatus(orderFishForm.getStatus());
 
         OrderFish updatedOrderFish = orderFishRepository.save(orderFish);
         log.info("Order updated with ID: {}", updatedOrderFish.getOrderFishId());

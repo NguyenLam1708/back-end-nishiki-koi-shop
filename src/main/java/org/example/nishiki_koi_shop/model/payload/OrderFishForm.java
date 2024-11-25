@@ -5,13 +5,12 @@ import org.example.nishiki_koi_shop.model.entity.OrderFish;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class OrderFishForm {
-    private BigDecimal totalAmount;
-    private OrderFish.Status status;
     private LocalDate deliveryDate;
     private String paymentMethod;
-    private LocalDate createdDate;
+    private List<Long> cartItemIds;
     private String shippingAddress;
 }
