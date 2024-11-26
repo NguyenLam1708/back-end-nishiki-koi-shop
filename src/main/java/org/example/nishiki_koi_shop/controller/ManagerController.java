@@ -108,8 +108,8 @@ public class ManagerController {
         OrderTourDetailDto updatedDetail = orderTourDetailService.updateOrderTourDetail(id, form);
         return new ResponseEntity<>(updatedDetail, HttpStatus.OK);
     }
-    // OrderFish
 
+    // OrderFish
     @GetMapping("/order-fishes/get-all-order-fishes")
     public ResponseEntity<List<OrderFishDto>> getAllOrderFishes() {
         return new ResponseEntity<>(orderFishService.getAllOrderFishes(), HttpStatus.OK);
@@ -121,13 +121,13 @@ public class ManagerController {
     }
 
     @PutMapping("/order-fishes/update/{id}")
-    public ResponseEntity<OrderFishDto> updateOrderFish(@PathVariable long id, @RequestBody OrderFishForm orderFishForm) {
+    public ResponseEntity<OrderFishDto> updateOrderFish(@PathVariable long id, @ModelAttribute OrderFishForm orderFishForm) {
         return new ResponseEntity<>(orderFishService.updateOrderFish(id, orderFishForm), HttpStatus.OK);
     }
 
     //OrderFishDetail
     @GetMapping("/order-fish-details/order-fish/{id}")
-    public ResponseEntity<List<OrderFishDetailDto>> getOrderFishDetailByOrderFishId(@PathVariable long id) {
+    public ResponseEntity<OrderFishDetailDto> getOrderFishDetailByOrderFishId(@PathVariable long id) {
         return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailByOrderFishId(id), HttpStatus.OK);
     }
 

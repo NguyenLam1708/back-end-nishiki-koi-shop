@@ -24,7 +24,7 @@ public class OrderFishController{
     private OrderFishService orderFishService;
 
     @PostMapping("/create")
-    public ResponseEntity<OrderFishDto> createOrderFish(@RequestBody OrderFishForm orderFishForm, Principal principal) {
+    public ResponseEntity<OrderFishDto> createOrderFish(@ModelAttribute OrderFishForm orderFishForm, Principal principal) {
         return new ResponseEntity<>(orderFishService.createOrderFish(orderFishForm, principal), HttpStatus.CREATED);
     }
     @GetMapping("/history/user/{id}")

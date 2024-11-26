@@ -7,5 +7,5 @@ import java.security.Principal;
 import java.util.List;
 
 public interface OrderFishDetailService {
-    List<OrderFishDetailDto> getOrderFishDetailByOrderFishId(long orderFishId);
+    OrderFishDetailDto getOrderFishDetailByOrderFishId(long orderFishId);
 }

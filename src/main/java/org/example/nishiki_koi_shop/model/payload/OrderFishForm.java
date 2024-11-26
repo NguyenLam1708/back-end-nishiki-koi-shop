@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 public class OrderFishForm {
-    private LocalDate deliveryDate;
+//    private LocalDate deliveryDate;
     private String paymentMethod;
     private List<Long> cartItemIds;
     private String shippingAddress;
