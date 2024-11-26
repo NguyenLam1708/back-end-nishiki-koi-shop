@@ -26,7 +26,7 @@ public class OrderFishDetailController {
     private final OrderFishDetailService orderFishDetailService;
 
     @GetMapping("/order-fish/{id}")
-    public ResponseEntity<List<OrderFishDetailDto>> getOrderFishDetailByOrderFishId(@PathVariable long id) {
+    public ResponseEntity<OrderFishDetailDto> getOrderFishDetailByOrderFishId(@PathVariable long id) {
         return new ResponseEntity<>(orderFishDetailService.getOrderFishDetailByOrderFishId(id), HttpStatus.OK);
     }
 }

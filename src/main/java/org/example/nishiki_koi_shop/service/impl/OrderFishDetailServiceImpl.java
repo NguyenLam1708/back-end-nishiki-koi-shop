@@ -31,11 +31,19 @@ public class OrderFishDetailServiceImpl implements OrderFishDetailService {
     private final OrderFishRepository orderFishRepository;
 
     @Override
-    public List<OrderFishDetailDto> getOrderFishDetailByOrderFishId(long orderFishId) {
+    public OrderFishDetailDto getOrderFishDetailByOrderFishId(long orderFishId) {
         OrderFish orderFish = orderFishRepository.findById(orderFishId).orElseThrow();
-        return orderFishDetailRepository.findAllByOrderFish(orderFish).stream()
-                .map(OrderFishDetailDto::from)
-                .collect(Collectors.toList());
+
+
+//        return orderFishDetailRepository.findAllByOrderFish(orderFish).stream()
+//                .map(OrderFishDetailDto::from)
+//                .collect(Collectors.toList());
+
+        // Lấy tất cả OrderFishDetail liên quan
+        List<OrderFishDetail> orderFishDetails = orderFishDetailRepository.findAllByOrderFish(orderFish);
+
+        // Gom tất cả fishId thành một DTO duy nhất
+        return OrderFishDetailDto.from(orderFish, orderFishDetails);
     }
 
 }

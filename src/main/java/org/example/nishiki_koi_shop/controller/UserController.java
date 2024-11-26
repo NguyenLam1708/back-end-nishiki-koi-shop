@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserDto> updateMyInfo(@PathVariable("id") long id, Principal principal,@RequestBody UserForm form){
-        return ResponseEntity.ok(userService.updateMyInfo(id, principal,form));
+    public ResponseEntity<UserDto> updateMyInfo(@PathVariable("id") long id, Principal principal, @ModelAttribute UserForm form) {
+        return ResponseEntity.ok(userService.updateMyInfo(id, principal, form));
     }
 
 }

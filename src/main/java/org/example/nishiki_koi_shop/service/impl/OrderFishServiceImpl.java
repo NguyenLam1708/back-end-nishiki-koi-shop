@@ -1,4 +1,4 @@
-    package org.example.nishiki_koi_shop.service.impl;
+package org.example.nishiki_koi_shop.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +61,7 @@ public class OrderFishServiceImpl implements OrderFishService {
         OrderFish orderFish = OrderFish.builder()
                 .user(user)
                 .totalAmount(totalAmount)
-                .deliveryDate(orderFishForm.getDeliveryDate())
+//                .deliveryDate(orderFishForm.getDeliveryDate())
                 .paymentMethod(orderFishForm.getPaymentMethod())
                 .shippingAddress(orderFishForm.getShippingAddress())
                 .createdDate(LocalDate.now())
@@ -154,8 +154,9 @@ public class OrderFishServiceImpl implements OrderFishService {
         OrderFish orderFish = orderFishRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrderFish not found"));
 
-        orderFish.setDeliveryDate(orderFishForm.getDeliveryDate());
-        orderFish.setPaymentMethod(orderFishForm.getPaymentMethod());
+//        orderFish.setDeliveryDate(orderFishForm.getDeliveryDate());
+        if (!orderFishForm.getPaymentMethod().isEmpty())
+            orderFish.setPaymentMethod(orderFishForm.getPaymentMethod());
         orderFish.setStatus(orderFishForm.getStatus());
 
         OrderFish updatedOrderFish = orderFishRepository.save(orderFish);
